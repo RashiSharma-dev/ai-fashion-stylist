@@ -1,0 +1,14 @@
+The problem your app solves:Many people dont know what actually suits their skin tone. This app basically solves your problem by giving you the right colour of fit that would actually suit you and make you look better.
+
+5 features you want to build:
+~skin tone detector 
+~Color recommender
+~Outfit suggester
+~Ai chatbot Stylist
+~Virtual color try-on 
+
+
+A simple user flow (User opens app → ... → Result):
+user opens App-> upload photo->App detects skin tone->user chats with AI stylist for more advice.
+
+result: user knows what color/outfit suits them.
