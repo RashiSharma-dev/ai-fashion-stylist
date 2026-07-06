@@ -22,4 +22,4 @@ The app is built with 5 main components:
 4. **Chatbot** - AI-powered fashion assistant that answers styling questions
 5. **Database** - stores outfit data, color rules, and user profiles (CSV/JSON files)
 
-See `docs/architecture-sketch.jpg` for the visual diagram.
+See `docs/architecture-sketch.jpg` for the visual diagramss.
