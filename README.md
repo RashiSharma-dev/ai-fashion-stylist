@@ -23,3 +23,13 @@ The app is built with 5 main components:
 5. **Database** - stores outfit data, color rules, and user profiles (CSV/JSON files)
 
 See `docs/architecture-sketch.jpg` for the visual diagramss.
+
+## Technologies Used
+
+- **Python** - main programming language
+- **OpenCV (cv2)** - image loading, processing, and color space conversion
+- **NumPy** - array/matrix operations (images are represented as arrays)
+- **Pillow (PIL)** - creating and saving images
+- **Pandas** - managing the outfit database (CSV data)
+- **Matplotlib** - creating charts and visualizations
+- **JSON** - storing structured data like color profiles and rules
