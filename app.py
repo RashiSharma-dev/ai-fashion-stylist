@@ -1,38 +1,25 @@
 import streamlit as st
+import cv2
+import numpy as np
+from PIL import Image
 
 st.title("AI Fashion Color Fit Matcher")
+st.write("### Upload Your Photo")
 
-# ---- SIDEBAR ----
-st.sidebar.title("Navigation")
-st.sidebar.write("Use this menu to move around the app")
-page_choice = st.sidebar.radio("Go to:", ["Home", "Upload", "Results"])
+uploaded = st.file_uploader("Upload photo", type=['jpg', 'jpeg', 'png'])
 
-# ---- COLUMNS ----
-st.write("### Columns Example")
-col1, col2 = st.columns(2)
+if uploaded is not None:
+    # Show the uploaded image
+    st.image(uploaded, caption="Your uploaded photo")
 
-with col1:
-    st.write("This is the left column")
-    st.button("Left Button")
+    # Convert the uploaded file to an OpenCV-compatible format
+    image = Image.open(uploaded)
+    image_array = np.array(image)
+    opencv_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2BGR)
 
-with col2:
-    st.write("This is the right column")
-    st.button("Right Button")
-
-# ---- TABS ----
-st.write("### Tabs Example")
-tab1, tab2, tab3 = st.tabs(["Upload", "Results", "Chatbot"])
-
-with tab1:
-    st.write("This is the Upload tab")
-    st.file_uploader("Upload your photo here")
-
-with tab2:
-    st.write("This is the Results tab")
-    st.write("Your color recommendations will appear here")
-
-with tab3:
-    st.write("This is the Chatbot tab")
-    st.write("Chat with your AI stylist here")
-
-st.write(f"You selected from sidebar: **{page_choice}**")
+    # Show image metadata
+    st.write("**Image size and shape:**")
+    st.write(f"Shape: {opencv_image.shape}")
+    st.write(f"Width: {image.width}px, Height: {image.height}px")
+else:
+    st.write("Please upload a photo to see it here.")
