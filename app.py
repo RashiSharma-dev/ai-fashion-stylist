@@ -1,9 +1,18 @@
 import streamlit as st
+st.markdown("""
+    <style>
+    .stButton>button {
+        border-radius: 8px;
+        border: 1px solid #D96C8C;
+    }
+    </style>
+""", unsafe_allow_html=True)
 import cv2
 import numpy as np
 from PIL import Image
 
 st.title("AI Fashion Color Fit Matcher")
+st.button("Test Button")
 st.write("### Upload Your Photo")
 
 uploaded = st.file_uploader("Upload photo", type=['jpg', 'jpeg', 'png'])
