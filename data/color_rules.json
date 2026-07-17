@@ -1,0 +1,14 @@
+{
+    "warm": {
+        "description": "Yellow, golden, or peachy undertones",
+        "best_colors": ["Olive Green", "Camel", "Mustard", "Warm Red", "Orange", "Coral", "Gold", "Terracotta"]
+    },
+    "cool": {
+        "description": "Pink, red, or bluish undertones",
+        "best_colors": ["Royal Blue", "Emerald Green", "True Red", "Purple", "Fuchsia", "Silver", "Navy", "Lavender"]
+    },
+    "neutral": {
+        "description": "A balanced mix of warm and cool undertones",
+        "best_colors": ["Soft White", "Grey", "Rose Pink", "Teal", "Mauve", "Jade", "Soft Blue", "Blush"]
+    }
+}
