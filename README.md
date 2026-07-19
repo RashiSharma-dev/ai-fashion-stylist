@@ -33,3 +33,18 @@ See `docs/architecture-sketch.jpg` for the visual diagramss.
 - **Pandas** - managing the outfit database (CSV data)
 - **Matplotlib** - creating charts and visualizations
 - **JSON** - storing structured data like color profiles and rules
+
+## Current UI Status
+
+The app now has 3 working pages: Home, Upload, and Results, with 
+working navigation and shared data between pages using session_state.
+
+**What looks good:**
+- Dark theme with pink accents feels cohesive
+- Navigation between pages works smoothly
+- Photo upload and preview works reliably
+
+**What to improve later:**
+- Add more visual polish to results page (currently just shows photo)
+- Add loading states when processing
+- Improve mobile responsiveness
