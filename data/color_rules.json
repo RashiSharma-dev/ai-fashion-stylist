@@ -1,14 +1,41 @@
 {
     "warm": {
         "description": "Yellow, golden, or peachy undertones",
-        "best_colors": ["Olive Green", "Camel", "Mustard", "Warm Red", "Orange", "Coral", "Gold", "Terracotta"]
+        "best_colors": [
+            {"name": "Olive Green", "hex": "#708238"},
+            {"name": "Camel", "hex": "#C19A6B"},
+            {"name": "Mustard", "hex": "#FFDB58"},
+            {"name": "Warm Red", "hex": "#C1440E"},
+            {"name": "Orange", "hex": "#FF7F32"},
+            {"name": "Coral", "hex": "#FF7F50"},
+            {"name": "Gold", "hex": "#D4AF37"},
+            {"name": "Terracotta", "hex": "#E2725B"}
+        ]
     },
     "cool": {
         "description": "Pink, red, or bluish undertones",
-        "best_colors": ["Royal Blue", "Emerald Green", "True Red", "Purple", "Fuchsia", "Silver", "Navy", "Lavender"]
+        "best_colors": [
+            {"name": "Royal Blue", "hex": "#4169E1"},
+            {"name": "Emerald Green", "hex": "#50C878"},
+            {"name": "True Red", "hex": "#FF0000"},
+            {"name": "Purple", "hex": "#800080"},
+            {"name": "Fuchsia", "hex": "#FF00FF"},
+            {"name": "Silver", "hex": "#C0C0C0"},
+            {"name": "Navy", "hex": "#000080"},
+            {"name": "Lavender", "hex": "#B57EDC"}
+        ]
     },
     "neutral": {
         "description": "A balanced mix of warm and cool undertones",
-        "best_colors": ["Soft White", "Grey", "Rose Pink", "Teal", "Mauve", "Jade", "Soft Blue", "Blush"]
+        "best_colors": [
+            {"name": "Soft White", "hex": "#F5F5F0"},
+            {"name": "Grey", "hex": "#808080"},
+            {"name": "Rose Pink", "hex": "#E8B4B8"},
+            {"name": "Teal", "hex": "#008080"},
+            {"name": "Mauve", "hex": "#E0B0FF"},
+            {"name": "Jade", "hex": "#00A86B"},
+            {"name": "Soft Blue", "hex": "#A2C4E0"},
+            {"name": "Blush", "hex": "#DE5D83"}
+        ]
     }
 }

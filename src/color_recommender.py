@@ -51,7 +51,9 @@ def analyze_and_recommend(image_path):
     recommended_colors = get_recommended_colors(skin_tone)
 
     print(f"\nYour skin tone is: {skin_tone.upper()}")
-    print(f"Best colors for you: {', '.join(recommended_colors)}")
+    
+    color_names = [c["name"] for c in recommended_colors]
+    print(f"Best colors for you: {', '.join(color_names)}")
 
     return {
         "skin_tone": skin_tone,
