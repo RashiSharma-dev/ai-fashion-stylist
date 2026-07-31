@@ -1,0 +1,1 @@
+I chose to use 5 clusters because most clothing items have around 2-5 genuinely distinct colors (main color, pattern, trim, etc.), and using too many clusters would create unnecessary tiny color variations that aren't meaningful, while too few might miss real colors in the image.
