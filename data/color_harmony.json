@@ -1,0 +1,16 @@
+{
+  "complementary_pairs": [
+    ["Red", "Green"],
+    ["Blue", "Orange"],
+    ["Yellow", "Purple"],
+    ["Navy Blue", "Mustard"],
+    ["Maroon", "Emerald Green"]
+  ],
+  "analogous_pairs": [
+    ["Blue", "Teal"],
+    ["Red", "Orange"],
+    ["Yellow", "Green"],
+    ["Navy Blue", "Royal Blue"],
+    ["Beige", "Camel"]
+  ]
+}
