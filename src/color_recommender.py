@@ -62,4 +62,5 @@ def analyze_and_recommend(image_path):
 
 
 # Test it
-result = analyze_and_recommend("data/photo.jpg")
+if __name__ == "__main__":
+    result = analyze_and_recommend("data/photo.jpg")
