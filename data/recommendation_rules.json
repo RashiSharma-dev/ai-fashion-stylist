@@ -1,0 +1,200 @@
+{
+    "warm_formal_summer": {
+        "skin_tone": "warm",
+        "occasion": "Formal",
+        "season": "Summer",
+        "match_level": "exact",
+        "outfit_ids": [
+            2,
+            52,
+            93
+        ]
+    },
+    "warm_formal_winter": {
+        "skin_tone": "warm",
+        "occasion": "Formal",
+        "season": "Winter",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            2,
+            3,
+            9
+        ]
+    },
+    "warm_casual_summer": {
+        "skin_tone": "warm",
+        "occasion": "Casual",
+        "season": "Summer",
+        "match_level": "exact",
+        "outfit_ids": [
+            35,
+            53,
+            67
+        ]
+    },
+    "warm_casual_winter": {
+        "skin_tone": "warm",
+        "occasion": "Casual",
+        "season": "Winter",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            35,
+            53,
+            67
+        ]
+    },
+    "warm_party_summer": {
+        "skin_tone": "warm",
+        "occasion": "Party",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            56,
+            58,
+            59
+        ]
+    },
+    "warm_party_winter": {
+        "skin_tone": "warm",
+        "occasion": "Party",
+        "season": "Winter",
+        "match_level": "exact",
+        "outfit_ids": [
+            58,
+            59,
+            63
+        ]
+    },
+    "cool_formal_summer": {
+        "skin_tone": "cool",
+        "occasion": "Formal",
+        "season": "Summer",
+        "match_level": "exact",
+        "outfit_ids": [
+            21,
+            42,
+            50
+        ]
+    },
+    "cool_formal_winter": {
+        "skin_tone": "cool",
+        "occasion": "Formal",
+        "season": "Winter",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            7,
+            21,
+            29
+        ]
+    },
+    "cool_casual_summer": {
+        "skin_tone": "cool",
+        "occasion": "Casual",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            25,
+            32,
+            99
+        ]
+    },
+    "cool_casual_winter": {
+        "skin_tone": "cool",
+        "occasion": "Casual",
+        "season": "Winter",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            25,
+            32,
+            99
+        ]
+    },
+    "cool_party_summer": {
+        "skin_tone": "cool",
+        "occasion": "Party",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            8,
+            69,
+            83
+        ]
+    },
+    "cool_party_winter": {
+        "skin_tone": "cool",
+        "occasion": "Party",
+        "season": "Winter",
+        "match_level": "exact",
+        "outfit_ids": [
+            69,
+            98,
+            139
+        ]
+    },
+    "neutral_formal_summer": {
+        "skin_tone": "neutral",
+        "occasion": "Formal",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            1,
+            10,
+            13
+        ]
+    },
+    "neutral_formal_winter": {
+        "skin_tone": "neutral",
+        "occasion": "Formal",
+        "season": "Winter",
+        "match_level": "exact",
+        "outfit_ids": [
+            13,
+            37,
+            43
+        ]
+    },
+    "neutral_casual_summer": {
+        "skin_tone": "neutral",
+        "occasion": "Casual",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            12,
+            15,
+            18
+        ]
+    },
+    "neutral_casual_winter": {
+        "skin_tone": "neutral",
+        "occasion": "Casual",
+        "season": "Winter",
+        "match_level": "exact",
+        "outfit_ids": [
+            36,
+            90,
+            101
+        ]
+    },
+    "neutral_party_summer": {
+        "skin_tone": "neutral",
+        "occasion": "Party",
+        "season": "Summer",
+        "match_level": "season_relaxed",
+        "outfit_ids": [
+            6,
+            17,
+            20
+        ]
+    },
+    "neutral_party_winter": {
+        "skin_tone": "neutral",
+        "occasion": "Party",
+        "season": "Winter",
+        "match_level": "exact",
+        "outfit_ids": [
+            17,
+            20,
+            55
+        ]
+    }
+}

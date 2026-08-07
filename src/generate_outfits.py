@@ -20,7 +20,7 @@ genders = ["Male", "Female", "Unisex"]
 rows = []
 outfit_id = 1
 
-for i in range(60):
+for i in range(150):
     top = random.choice(top_colors)
     bottom = random.choice(bottom_colors)
     occasion = random.choice(occasions)
