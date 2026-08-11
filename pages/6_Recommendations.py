@@ -5,35 +5,16 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from recommender import OutfitRecommender
-from color_recommender import load_color_rules
 
-BOTTOM_COLOR_HEX = {
-    "Black": "#000000",
-    "White": "#FFFFFF",
-    "Navy": "#000080",
-    "Grey": "#808080",
-    "Beige": "#F5F5DC",
-    "Denim Blue": "#1560BD",
-}
+st.title("👗 Your Outfit Recommendations")
 
-MATCH_SCORES = {
-    "exact": 100,
-    "season_relaxed": 75,
-    "color_only": 50,
-}
-
-
-def get_color_hex(color_name):
-    if color_name in BOTTOM_COLOR_HEX:
-        return BOTTOM_COLOR_HEX[color_name]
-
-    rules = load_color_rules()
-    for skin_tone_data in rules.values():
-        for c in skin_tone_data["best_colors"]:
-            if c["name"] == color_name:
-                return c["hex"]
-
-    return "#CCCCCC"
+with st.sidebar:
+    st.header("Filters")
+    skin_tone = st.selectbox("Skin Tone", ["warm", "cool", "neutral"])
+    occasion = st.selectbox("Occasion", ["Formal", "Casual", "Party"])
+    season = st.selectbox("Season", ["Summer", "Winter"])
+    gender = st.selectbox("Gender", ["Any", "Male", "Female", "Unisex"])
+    style = st.selectbox("Style", ["Any", "Ethnic", "Western", "Fusion", "Minimalist", "Bohemian"])
 
 
 def get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style):
@@ -63,26 +44,17 @@ def get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style
             fallback["match_level"] = "color_only"
             pool = fallback
 
-    pool = pool.copy()
-    pool["match_score"] = pool["match_level"].map(MATCH_SCORES)
-    pool = pool.sort_values("match_score", ascending=False)
-
     outfits = pool.to_dict("records")
     for outfit in outfits:
         outfit["skin_tone"] = skin_tone
 
+    for outfit in outfits:
+        outfit["scores"] = recommender.calculate_match_score(outfit)
+
+    outfits.sort(key=lambda o: o["scores"]["total"], reverse=True)
+
     return outfits
 
-
-st.title("👗 Your Outfit Recommendations")
-
-with st.sidebar:
-    st.header("Filters")
-    skin_tone = st.selectbox("Skin Tone", ["warm", "cool", "neutral"])
-    occasion = st.selectbox("Occasion", ["Formal", "Casual", "Party"])
-    season = st.selectbox("Season", ["Summer", "Winter"])
-    gender = st.selectbox("Gender", ["Any", "Male", "Female", "Unisex"])
-    style = st.selectbox("Style", ["Any", "Ethnic", "Western", "Fusion", "Minimalist", "Bohemian"])
 
 recommender = OutfitRecommender()
 all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style)
@@ -98,9 +70,17 @@ for row_start in range(0, len(display_outfits), 3):
 
     for col, outfit in zip(cols, row_outfits):
         with col:
-            top_hex = get_color_hex(outfit["top_color"])
-            bottom_hex = get_color_hex(outfit["bottom_color"])
-            score = outfit["match_score"]
+            top_hex = recommender.get_color_hex(outfit["top_color"])
+            bottom_hex = recommender.get_color_hex(outfit["bottom_color"])
+            scores = outfit["scores"]
+            total = scores["total"]
+
+            if total >= 80:
+                bar_color = "#4CAF50"
+            elif total >= 50:
+                bar_color = "#FFC107"
+            else:
+                bar_color = "#F44336"
 
             st.markdown(f"""
             <div style="border:1px solid #444; border-radius:10px; padding:12px; margin-bottom:10px;">
@@ -111,11 +91,14 @@ for row_start in range(0, len(display_outfits), 3):
                 <b>Outfit #{outfit['outfit_id']}</b><br>
                 {outfit['top_color']} + {outfit['bottom_color']}<br>
                 <span style="background-color:#D96C8C; padding:2px 8px; border-radius:8px; font-size:12px;">{outfit['occasion']}</span>
+                <div style="background-color:#333; border-radius:5px; height:12px; width:100%; margin-top:10px;">
+                    <div style="background-color:{bar_color}; width:{total}%; height:12px; border-radius:5px;"></div>
+                </div>
+                <p style="font-size:13px; margin-top:5px; margin-bottom:0;"><b>{total}% Match</b></p>
             </div>
             """, unsafe_allow_html=True)
 
-            st.progress(score / 100)
-            st.caption(f"Match Score: {score}%")
+            st.caption(f"Skin Match: {scores['skin_match']}% | Color Harmony: {scores['color_harmony']}% ({scores['harmony_label']}) | Occasion: {scores['occasion_fit']}%")
 
             with st.expander("Why this outfit?"):
                 st.write(recommender.explain(outfit))
