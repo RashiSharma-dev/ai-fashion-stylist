@@ -1,14 +1,35 @@
 import streamlit as st
 import sys
 import os
+import datetime
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from recommender import OutfitRecommender
+from user_profile import save_profile, load_profile
 
 st.title("👗 Your Outfit Recommendations")
 
 with st.sidebar:
+    st.header("Your Profile")
+
+    if "user_name" not in st.session_state:
+        st.session_state.user_name = ""
+
+    name_input = st.text_input("Enter your name", value=st.session_state.user_name)
+
+    if name_input:
+        st.session_state.user_name = name_input
+        profile = load_profile(name_input)
+
+        if profile:
+            st.success(f"Welcome back, {name_input}! 👋")
+            st.caption(f"Last search: {profile['skin_tone'].title()} skin, {profile['occasion']}, {profile['season']}")
+            st.caption(f"Top match last time: Outfit #{profile['top_outfit_id']} ({profile['top_score']}%)")
+            st.caption(f"Last visit: {profile['last_updated']}")
+        else:
+            st.info("New profile! Your preferences will be saved after your first search below.")
+
     st.header("Filters")
     skin_tone = st.selectbox("Skin Tone", ["warm", "cool", "neutral"])
     occasion = st.selectbox("Occasion", ["Formal", "Casual", "Party"])
@@ -102,3 +123,15 @@ for row_start in range(0, len(display_outfits), 3):
 
             with st.expander("Why this outfit?"):
                 st.write(recommender.explain(outfit))
+
+if st.session_state.user_name and display_outfits:
+    save_profile(st.session_state.user_name, {
+        "skin_tone": skin_tone,
+        "occasion": occasion,
+        "season": season,
+        "gender": gender,
+        "style": style,
+        "top_outfit_id": display_outfits[0]["outfit_id"],
+        "top_score": display_outfits[0]["scores"]["total"],
+        "last_updated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    })
