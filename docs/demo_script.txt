@@ -1,0 +1,66 @@
+AI FASHION COLOR FIT MATCHER — DEMO SCRIPT (5 minutes)
+=========================================================
+
+[0:00–0:30] INTRODUCTION
+--------------------------
+CLICK: Open the app at localhost:8501, land on Home page
+SAY: "This is my AI Fashion Color Fit Matcher — it analyzes your
+skin tone and recommends clothing colors and outfits using
+computer vision and machine learning, all in a Streamlit web app."
+
+[0:30–1:30] SKIN TONE DETECTION
+--------------------------------
+CLICK: Go to Upload page → upload a selfie
+CLICK: Go to Result page → show detected skin tone
+SAY: "First, I upload a selfie. OpenCV's Haar Cascade detects my
+face, then I analyze the average Hue and Saturation in HSV color
+space to classify my skin tone as warm, cool, or neutral — here
+it's detected as [X]. Based on that, the app recommends a
+personalized color palette from a rules-based JSON file."
+
+[1:30–2:30] OUTFIT COLOR EXTRACTION
+-------------------------------------
+CLICK: Go to Outfit Colors page → upload a clothing photo
+SAY: "Next, I can upload any clothing photo. K-Means clustering
+groups all the pixels by color similarity and extracts the 5 most
+dominant colors, shown here as a palette strip with HEX codes."
+
+[2:30–3:15] COMPATIBILITY CHECK
+----------------------------------
+CLICK: Go to Outfit Match page → upload selfie + outfit together
+SAY: "This page combines both features — it checks if a specific
+outfit's dominant color actually suits my detected skin tone, and
+gives a clear Excellent/Not Ideal verdict."
+
+[3:15–4:30] RECOMMENDATION ENGINE
+------------------------------------
+CLICK: Go to Recommendations page
+CLICK: Enter name in sidebar, adjust filters (Occasion, Season,
+Gender, Style)
+SAY: "This is the core recommendation engine. I filter a database
+of 150 outfits by my skin tone's recommended colors, occasion, and
+season, using a cascading fallback system so there's always a
+result even for narrow searches. Each outfit gets a real match
+score — a weighted combination of skin tone match, color harmony,
+and occasion fit — shown with a color-coded bar and a full
+breakdown."
+CLICK: Expand "Why this outfit?" on one card
+SAY: "Every recommendation is explainable — I can always show
+exactly why an outfit was chosen, not just a black-box score."
+
+[4:30–5:00] RETURNING USER + WRAP-UP
+---------------------------------------
+CLICK: Refresh the page, re-enter the same name in the sidebar
+SAY: "The app also remembers returning users — their last search
+and top result are saved and shown on their next visit, using
+session state and lightweight JSON persistence, no database
+needed for this stage."
+SAY: "That's my project so far — thank you!"
+
+=========================================================
+NOTES / BUGS FOUND DURING PRACTICE:
+- Practiced the demo twice, end-to-end.
+- No bugs or errors encountered during either run.
+- All pages loaded correctly and features worked as expected.
+- Timing was close to 5 minutes as planned.
+=========================================================
