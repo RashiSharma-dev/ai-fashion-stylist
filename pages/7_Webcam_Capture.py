@@ -18,7 +18,7 @@ if camera_photo is not None:
     save_path = "data/temp_webcam_capture.jpg"
     image.save(save_path)
 
-    st.image(image, caption="Your Captured Photo", use_column_width=True)
+    st.image(image, caption="Your Captured Photo", width="stretch")
 
     result = analyze_and_recommend(save_path)
 
