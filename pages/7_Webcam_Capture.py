@@ -22,8 +22,8 @@ if camera_photo is not None:
 
     result = analyze_and_recommend(save_path)
 
-    if result is None:
-        st.error("No face detected. Please try again with better lighting and face the camera directly.")
+    if result.get("error"):
+        st.error(result["error"])
     else:
         skin_tone = result["skin_tone"]
         recommended_colors = result["recommended_colors"]

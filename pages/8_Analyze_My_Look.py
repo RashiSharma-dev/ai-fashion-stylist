@@ -34,8 +34,8 @@ if analyze_clicked:
         result = analyze_and_recommend(save_path)
         time.sleep(0.5)
 
-    if result is None:
-        st.error("No face detected. Please retake the photo with better lighting, facing the camera directly.")
+    if result.get("error"):
+        st.error(result["error"])
     else:
         skin_tone = result["skin_tone"]
 

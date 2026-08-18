@@ -26,13 +26,13 @@ if selfie_file is not None and outfit_file is not None:
     selfie_image.save(selfie_path)
     outfit_image.save(outfit_path)
 
-    col1.image(selfie_image, caption="Your Selfie", use_column_width=True)
-    col2.image(outfit_image, caption="Your Outfit", use_column_width=True)
+    col1.image(selfie_image, caption="Your Selfie", width="stretch")
+    col2.image(outfit_image, caption="Your Outfit", width="stretch")
 
     result = check_outfit_compatibility(selfie_path, outfit_path)
 
-    if result is None:
-        st.error("No face detected in your selfie. Please try a clearer photo.")
+    if result.get("error"):
+        st.error(result["error"])
     else:
         st.subheader("Result")
         if result["is_recommended"]:
