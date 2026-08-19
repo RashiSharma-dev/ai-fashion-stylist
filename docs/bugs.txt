@@ -1,0 +1,61 @@
+BUG FIX LOG — Week 7
+=====================================
+
+BUG 1: Nested duplicate file (src/6_Recommendations.py)
+-------------------------------------------------------
+Bug: A duplicate copy of 6_Recommendations.py accidentally got
+created inside src/ alongside the correct one in pages/.
+Cause: Likely an accidental save/copy into the wrong folder while
+creating the file in VS Code.
+Fix applied: Deleted the stray file from src/, confirmed the app
+still worked correctly using only the pages/ version, and pushed
+the cleanup as a separate commit.
+
+
+BUG 2: Deprecated use_column_width parameter
+-------------------------------------------------------
+Bug: Streamlit terminal showed a deprecation warning:
+"The `use_column_width` parameter has been deprecated..."
+Cause: Streamlit updated their API and is phasing out
+use_column_width in favor of the newer `width` parameter.
+Fix applied: Replaced use_column_width=True with width="stretch"
+in pages/7_Webcam_Capture.py. Re-ran the app and confirmed the
+warning no longer appears in the terminal.
+
+
+BUG 3: Inconsistent error handling (None vs dict with 'error' key)
+-------------------------------------------------------
+Bug: analyze_and_recommend() sometimes returned None (no face
+detected) and sometimes returned a full dictionary (success), which
+meant every page calling it needed different, inconsistent checks
+like "if result is None:" — fragile and easy to break when adding
+new pages.
+Cause: The original function design used None as a catch-all
+signal for "something went wrong," without distinguishing between
+different failure reasons (no face vs. too dark vs. bad file).
+Fix applied: Rewrote analyze_and_recommend() and
+check_outfit_compatibility() to always return a dictionary with an
+explicit "error" key (None if successful, or a specific message if
+not). Updated all 4 pages that call these functions
+(5_Outfit_Match.py, 7_Webcam_Capture.py, 8_Analyze_My_Look.py, plus
+outfit_compatibility.py itself) to consistently check
+result.get("error") instead of checking for None. Also added a new
+image_validation.py module to catch dark images and unreadable
+files before face detection even runs.
+
+
+BUG 4: Slow processing (2-3 minutes) on Outfit Colors and Outfit Match
+-------------------------------------------------------
+Bug: Uploading a photo on the Outfit Colors or Outfit Match page took
+2-3 minutes to process, making the app feel broken/unresponsive.
+Cause: K-Means clustering was running on the full original image
+resolution (potentially millions of pixels from a high-res phone
+camera photo), with n_init=10 meaning the algorithm ran 10 times
+per image. This scales very poorly with pixel count.
+Fix applied: Added a resize_for_speed() function to
+dominant_color_extractor.py that shrinks any image down to a max
+dimension of 300px before clustering. Since dominant colors don't
+meaningfully change at lower resolution, this cut processing time
+from minutes down to seconds with no visible quality loss.
+
+=====================================
