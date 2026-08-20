@@ -1,0 +1,44 @@
+VIRTUAL TRY-ON — REALISTIC SCOPE DECISION
+============================================
+
+WHAT A "FULL" VIRTUAL TRY-ON WOULD REQUIRE:
+- Human pose estimation (detecting body joints/skeleton)
+- Semantic segmentation (pixel-level clothing/body separation)
+- Deep learning models (often GAN-based) trained on large
+  clothing datasets to realistically warp fabric onto body shape
+- Significant compute resources and training time
+- This is genuinely research-level computer vision, well beyond
+  the scope of a 4-month beginner project
+
+WHAT I'M BUILDING INSTEAD: COLOR OVERLAY APPROXIMATION
+- Reuse existing face detection (Haar Cascade) to locate the face
+- Estimate the torso region as a fixed proportion below the face
+  (approximately 3x the face height, based on typical body
+  proportions)
+- Apply a semi-transparent color tint to that estimated region
+  using alpha blending (cv2.addWeighted())
+- Let the user pick any color with a color picker, and adjust
+  the overlay strength with a slider
+- Show a side-by-side "Before | After" comparison
+
+WHY THIS IS A REASONABLE TRADE-OFF:
+- It still delivers the core user value: "see roughly how a
+  color would look on you" — without needing to solve realistic
+  cloth simulation
+- It uses only techniques I've already learned (face detection,
+  color spaces, image blending) rather than requiring new deep
+  learning infrastructure
+- It's honest about its limitations rather than pretending to be
+  something more advanced than it is — this itself is good
+  engineering practice: understanding trade-offs and communicating
+  them clearly
+
+LIMITATIONS I'M CONSCIOUSLY ACCEPTING:
+- The overlay is a rough rectangular/estimated region, not a
+  precise clothing boundary — it won't follow the exact silhouette
+  of a shirt
+- It shows color only, not clothing texture, pattern, or fit
+- Body pose/orientation isn't accounted for (works best with a
+  person facing the camera directly, upright)
+
+============================================
