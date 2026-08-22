@@ -2,11 +2,15 @@ import streamlit as st
 import sys
 import os
 import datetime
+import numpy as np
+import cv2
+from PIL import Image
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from recommender import OutfitRecommender
 from user_profile import save_profile, load_profile
+from torso_overlay import apply_torso_overlay
 
 st.title("👗 Your Outfit Recommendations")
 
@@ -77,6 +81,16 @@ def get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style
     return outfits
 
 
+st.subheader("Step 1: Upload a photo for try-on previews (optional)")
+tryon_photo = st.file_uploader("Upload your photo", type=["jpg", "jpeg", "png"], key="tryon_upload")
+
+if tryon_photo is not None:
+    tryon_image = Image.open(tryon_photo).convert("RGB")
+    st.session_state.tryon_image_np = np.array(tryon_image)
+
+if "preview_outfit_id" not in st.session_state:
+    st.session_state.preview_outfit_id = None
+
 recommender = OutfitRecommender()
 all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style)
 
@@ -123,6 +137,41 @@ for row_start in range(0, len(display_outfits), 3):
 
             with st.expander("Why this outfit?"):
                 st.write(recommender.explain(outfit))
+
+            preview_disabled = "tryon_image_np" not in st.session_state
+            if st.button("👕 Preview on My Photo", key=f"preview_{outfit['outfit_id']}", disabled=preview_disabled):
+                st.session_state.preview_outfit_id = outfit["outfit_id"]
+
+if preview_disabled if "tryon_image_np" not in st.session_state else False:
+    pass
+
+if "tryon_image_np" not in st.session_state and st.session_state.preview_outfit_id is None:
+    st.info("👆 Upload a photo above to enable 'Preview on My Photo' buttons.")
+
+if st.session_state.preview_outfit_id is not None and "tryon_image_np" in st.session_state:
+    preview_outfit = next((o for o in display_outfits if o["outfit_id"] == st.session_state.preview_outfit_id), None)
+
+    if preview_outfit:
+        st.divider()
+        st.subheader(f"Preview: How you'd look in {preview_outfit['top_color'].upper()}")
+
+        top_hex = recommender.get_color_hex(preview_outfit["top_color"])
+        top_rgb = tuple(int(top_hex.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
+        top_bgr = (top_rgb[2], top_rgb[1], top_rgb[0])
+
+        image_bgr = cv2.cvtColor(st.session_state.tryon_image_np, cv2.COLOR_RGB2BGR)
+        result_bgr, error = apply_torso_overlay(image_bgr, top_bgr, strength=50)
+
+        if error:
+            st.error("No face detected in your uploaded photo. Please upload a clearer photo.")
+        else:
+            result_rgb = cv2.cvtColor(result_bgr, cv2.COLOR_BGR2RGB)
+
+            preview_col1, preview_col2 = st.columns(2)
+            with preview_col1:
+                st.image(st.session_state.tryon_image_np, caption="Original", width="stretch")
+            with preview_col2:
+                st.image(result_rgb, caption=f"Outfit #{preview_outfit['outfit_id']} Preview", width="stretch")
 
 if st.session_state.user_name and display_outfits:
     save_profile(st.session_state.user_name, {
