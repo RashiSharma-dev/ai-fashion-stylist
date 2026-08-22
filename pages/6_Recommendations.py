@@ -11,6 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from recommender import OutfitRecommender
 from user_profile import save_profile, load_profile
 from torso_overlay import apply_torso_overlay
+from report_generator import generate_style_report
 
 st.title("👗 Your Outfit Recommendations")
 
@@ -142,9 +143,6 @@ for row_start in range(0, len(display_outfits), 3):
             if st.button("👕 Preview on My Photo", key=f"preview_{outfit['outfit_id']}", disabled=preview_disabled):
                 st.session_state.preview_outfit_id = outfit["outfit_id"]
 
-if preview_disabled if "tryon_image_np" not in st.session_state else False:
-    pass
-
 if "tryon_image_np" not in st.session_state and st.session_state.preview_outfit_id is None:
     st.info("👆 Upload a photo above to enable 'Preview on My Photo' buttons.")
 
@@ -184,3 +182,25 @@ if st.session_state.user_name and display_outfits:
         "top_score": display_outfits[0]["scores"]["total"],
         "last_updated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     })
+
+st.divider()
+st.subheader("📄 Download Your Style Report")
+
+report_name = st.session_state.user_name if st.session_state.user_name else "Guest"
+
+if display_outfits:
+    html_report = generate_style_report(
+        name=report_name,
+        skin_tone=skin_tone,
+        top_outfits=display_outfits[:3],
+        preview_image_np=None
+    )
+
+    st.download_button(
+        label="⬇️ Download Your Style Report",
+        data=html_report,
+        file_name=f"{report_name.lower().replace(' ', '_')}_style_report.html",
+        mime="text/html"
+    )
+
+    st.caption("Downloads as an HTML file — open it in any browser, or use your browser's Print → Save as PDF to convert it.")
