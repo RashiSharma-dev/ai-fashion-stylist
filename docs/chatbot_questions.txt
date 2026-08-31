@@ -1,0 +1,70 @@
+CHATBOT SCOPE & PLANNED Q&A — AI Fashion Stylist Chatbot
+===========================================================
+Chatbot type: API-based (Groq, Llama 3 model — free tier, fast)
+Scope: Fashion color & styling advice only, personalized using
+       the user's detected skin tone and uploaded outfit data.
+Out of scope: Sizing/fit, shopping links, non-fashion topics.
+===========================================================
+
+1. Q: What colors suit a warm skin tone?
+   A: Warm earthy tones like mustard, olive, terracotta, and
+      warm reds work well because they complement warm undertones.
+
+2. Q: What colors suit a cool skin tone?
+   A: Jewel tones like emerald, sapphire blue, and true reds
+      complement cool undertones better than warm earthy shades.
+
+3. Q: What should I wear for a job interview?
+   A: Navy blue, charcoal grey, or black convey professionalism
+      and confidence. Avoid overly bright or busy patterns.
+
+4. Q: What are good summer colors?
+   A: Light pastels, whites, and soft blues feel fresh and
+      reflect heat rather than absorb it.
+
+5. Q: What are good winter colors?
+   A: Deep jewel tones, burgundy, forest green, and darker
+      neutrals suit the winter mood and colder palette.
+
+6. Q: What colors go well with a pink shirt?
+   A: Navy, white, grey, and soft denim blue pair well with
+      pink without clashing.
+
+7. Q: I have a neutral skin tone, what colors suit me best?
+   A: Neutral skin tones are flexible — both warm (coral, peach)
+      and cool (lavender, teal) shades can work well.
+
+8. Q: What should I wear to a wedding as a guest?
+   A: Avoid white (reserved for the bride). Soft pastels, jewel
+      tones, or elegant neutrals are safe, stylish choices.
+
+9. Q: Can I mix warm and cool colors in one outfit?
+   A: It's possible but riskier — usually one neutral piece
+      (white, black, grey, beige) helps bridge warm and cool tones.
+
+10. Q: What colors should I avoid with a cool skin tone?
+    A: Very warm, muted earthy tones like mustard or burnt
+       orange can wash out cool undertones.
+
+11. Q: What's a good color combination for a casual outfit?
+    A: Denim blue with white, or beige with olive green, are
+       easy, low-risk casual combinations.
+
+12. Q: What colors work well for a party outfit?
+    A: Bold jewel tones, metallics, or deep reds/blacks tend to
+       stand out well in evening/party settings.
+
+13. Q: Does my outfit color match my skin tone?
+    A: (This uses the app's own outfit_compatibility pipeline —
+       chatbot should reference the user's existing analysis
+       result rather than guessing from scratch.)
+
+14. Q: What's the difference between analogous and complementary colors?
+    A: Analogous colors sit next to each other on the color wheel
+       (e.g., blue-green-teal) and blend smoothly. Complementary
+       colors sit opposite each other (e.g., blue-orange) and
+       create bold contrast.
+
+15. Q: I'm not sure what colors suit me — where do I start?
+    A: Start with the app's skin tone analysis (Upload page), then
+       check the recommended color palette before choosing outfits.
