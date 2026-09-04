@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from color_recommender import analyze_and_recommend
 from recommender import OutfitRecommender
+from chatbot import set_analysis_context
 
 st.title("✨ Analyze My Look")
 st.write("Take a photo, pick your occasion and season, then click one button to get your full personalized style analysis.")
@@ -46,6 +47,15 @@ if analyze_clicked:
                 outfit["scores"] = recommender.calculate_match_score(outfit)
             time.sleep(0.5)
 
+        # Let the AI Stylist chatbot know about this analysis, so it can
+        # auto-greet the user with a personalized opener when they visit
+        # the chat page (Day 61 integration).
+        set_analysis_context(
+            skin_tone=skin_tone,
+            occasion=occasion,
+            image_path=save_path
+        )
+
         st.balloons()
 
         st.subheader(f"Detected Skin Tone: {skin_tone.upper()}")
@@ -75,3 +85,6 @@ if analyze_clicked:
                     st.caption(f"Match Score: {score}%")
                     with st.expander("Why this outfit?"):
                         st.write(recommender.explain(outfit))
+
+        st.divider()
+        st.page_link("pages/10_AI_Stylist_Chat.py", label="💬 Discuss my results with the AI Stylist", icon="🎨")
