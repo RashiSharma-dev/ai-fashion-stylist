@@ -1,7 +1,7 @@
 # src/chatbot.py
 # Purpose: Handles all communication with the Groq AI chatbot,
-# including context-aware prompts, conversation memory, and
-# auto-personalized greetings after an analysis completes.
+# including context-aware prompts, scope limiting, conversation
+# memory, and auto-personalized greetings after an analysis completes.
 
 import os
 from dotenv import load_dotenv
@@ -15,7 +15,8 @@ MODEL_NAME = "openai/gpt-oss-20b"
 
 def build_system_prompt(skin_tone, occasion=None):
     """Builds the AI's standing instructions, including whatever
-    context we currently know about the user."""
+    context we currently know about the user, plus scope-limiting
+    rules so the bot stays focused on fashion."""
     if skin_tone:
         context_line = f"The user has a {skin_tone} skin tone."
     else:
@@ -30,14 +31,25 @@ def build_system_prompt(skin_tone, occasion=None):
         "styling app. Give specific, actionable advice about clothing "
         "colors, outfit choices, and color combinations. "
         f"{context_line}{occasion_line} "
-        "Keep answers focused on fashion and color styling only. "
+        "SCOPE RULE: Only answer questions about fashion, clothing colors, "
+        "outfit choices, styling, and color theory. If the user asks about "
+        "anything unrelated (sports, politics, homework, coding, trivia, "
+        "entertainment, medical advice, etc.), politely decline and redirect "
+        "them back to fashion — for example: 'I'm a fashion stylist! Ask me "
+        "about colors, outfits, or style tips.' "
+        "SENSITIVE TOPICS: If the user expresses sadness, stress, or emotional "
+        "distress, do not simply redirect them to fashion topics. Respond with "
+        "warmth first, gently acknowledge that this is outside what you're "
+        "able to help with as a styling assistant, and encourage them to talk "
+        "to someone they trust. "
         "Keep responses concise (3-5 sentences) unless the user asks "
         "for more detail."
     )
 
 
 def get_chatbot_reply(conversation_history, skin_tone, occasion=None):
-    """Sends the conversation + fresh context to Groq and returns the reply."""
+    """Sends the conversation + fresh context to Groq and returns the reply.
+    Always returns {"error": None or "message", "reply": "..." or None}."""
     try:
         system_message = {"role": "system", "content": build_system_prompt(skin_tone, occasion)}
         full_messages = [system_message] + conversation_history
@@ -81,7 +93,7 @@ def set_analysis_context(skin_tone, occasion=None, image_path=None):
     st.session_state["stylist_context"] = {
         "skin_tone": skin_tone,
         "occasion": occasion,
-        "image_path": image_path,   # stored for future use (not sent to the AI yet — the free-tier text model can't "see" images)
+        "image_path": image_path,
     }
-    st.session_state["chat_greeted"] = False   # allow a fresh greeting next visit
-    st.session_state["chat_messages"] = []      # start a clean conversation
+    st.session_state["chat_greeted"] = False
+    st.session_state["chat_messages"] = []
