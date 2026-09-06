@@ -1,0 +1,58 @@
+{
+    "Spring": {
+        "colors": [
+            {"name": "Coral", "hex": "#FF7F6E"},
+            {"name": "Mint Green", "hex": "#98FF98"},
+            {"name": "Buttercup Yellow", "hex": "#FFDB58"},
+            {"name": "Sky Blue", "hex": "#87CEEB"},
+            {"name": "Peach", "hex": "#FFDAB9"},
+            {"name": "Lavender", "hex": "#E6E6FA"},
+            {"name": "Soft Pink", "hex": "#F4C2C2"},
+            {"name": "Apple Green", "hex": "#8DB600"}
+        ],
+        "fabric_suggestions": ["Cotton", "Linen", "Chiffon", "Light Denim"],
+        "pattern_suggestions": ["Floral prints", "Polka dots", "Gingham", "Pastel stripes"]
+    },
+    "Summer": {
+        "colors": [
+            {"name": "White", "hex": "#FFFFFF"},
+            {"name": "Turquoise", "hex": "#40E0D0"},
+            {"name": "Lemon Yellow", "hex": "#FFF44F"},
+            {"name": "Blush Pink", "hex": "#FFC0CB"},
+            {"name": "Seafoam Green", "hex": "#93E9BE"},
+            {"name": "Sand Beige", "hex": "#F5DEB3"},
+            {"name": "Coral", "hex": "#FF7F50"},
+            {"name": "Sky Blue", "hex": "#87CEEB"}
+        ],
+        "fabric_suggestions": ["Linen", "Cotton", "Chambray", "Seersucker"],
+        "pattern_suggestions": ["Tropical prints", "Stripes", "Tie-dye", "Watercolor florals"]
+    },
+    "Autumn": {
+        "colors": [
+            {"name": "Mustard", "hex": "#E1AD01"},
+            {"name": "Rust", "hex": "#B7410E"},
+            {"name": "Olive Green", "hex": "#708238"},
+            {"name": "Burgundy", "hex": "#800020"},
+            {"name": "Chocolate Brown", "hex": "#7B3F00"},
+            {"name": "Burnt Orange", "hex": "#CC5500"},
+            {"name": "Deep Teal", "hex": "#014D4E"},
+            {"name": "Camel", "hex": "#C19A6B"}
+        ],
+        "fabric_suggestions": ["Wool blends", "Corduroy", "Suede", "Flannel"],
+        "pattern_suggestions": ["Plaid", "Houndstooth", "Animal print", "Paisley"]
+    },
+    "Winter": {
+        "colors": [
+            {"name": "Navy", "hex": "#000080"},
+            {"name": "Emerald Green", "hex": "#50C878"},
+            {"name": "Charcoal Grey", "hex": "#36454F"},
+            {"name": "Ruby Red", "hex": "#9B111E"},
+            {"name": "Black", "hex": "#000000"},
+            {"name": "Plum", "hex": "#8E4585"},
+            {"name": "Ice Blue", "hex": "#A5F2F3"},
+            {"name": "Silver", "hex": "#C0C0C0"}
+        ],
+        "fabric_suggestions": ["Wool", "Velvet", "Cashmere", "Leather"],
+        "pattern_suggestions": ["Tartan", "Fair Isle knit", "Solid jewel tones", "Metallics"]
+    }
+}
