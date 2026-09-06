@@ -67,5 +67,43 @@ v0.2 — Core features complete (Phase 2: AI Core Features, Phase 3
 early progress: Webcam + Virtual Try-On). See `docs/` for architecture
 diagrams, data flow documentation, and the demo script.
 
+## 💬 AI Stylist Chatbot
+
+An AI-powered conversational stylist, built with Groq's `openai/gpt-oss-20b`
+model, that gives personalized fashion advice grounded in the user's own
+skin tone analysis.
+
+### Key Features
+- **Context-aware**: automatically knows the user's detected skin tone and
+  selected occasion — no need to repeat that information in every message.
+- **Auto-personalized greeting**: the moment a user finishes an analysis
+  and opens the chat, the AI proactively summarizes their results and
+  offers quick styling tips — no user input required to start.
+- **Conversation memory**: the full chat history is resent with every
+  request, so the AI maintains context across multiple turns.
+- **Scope-limited & safe**: the chatbot is restricted to fashion and
+  styling topics via a dedicated system prompt rule, with graceful
+  redirects for off-topic questions and a warmer, non-dismissive
+  response if a user expresses distress.
+
+### Example Conversation
+
+> **AI Stylist:** Hi there! Based on your analysis, you have a warm skin
+> tone — gorgeous! A few quick tips: earthy tones like olive and rust
+> will really make your complexion pop, and warm gold jewelry beats
+> silver for you every time.
+>
+> **You:** What about accessories for a formal look?
+>
+> **AI Stylist:** For a formal look that flatters a warm skin tone, go for gold‑tinted accessories: a classic gold watch, rose‑gold cufflinks, and a gold tie clip. Pair those with a crisp, deep‑burgundy or camel pocket square to echo the warm undertones. Choose leather shoes and belt in a rich brown (not black) to keep the ensemble cohesive. Add a sleek, black or deep‑navy clutch for a touch of contrast that still feels polished. Keep the overall palette muted and sophisticated, letting the warm accents pop subtly.
+>
+> **You:** What's the score of today's cricket match?
+>
+> **AI Stylist:** I’m a fashion stylist! Ask me about colors, outfits, or style tips
+
+### Tech Stack
+`Groq API` · `openai/gpt-oss-20b` · `python-dotenv` (secure key storage) ·
+Streamlit `st.chat_message` / `st.chat_input`
+
 ## Author
 Rashi Sharma
