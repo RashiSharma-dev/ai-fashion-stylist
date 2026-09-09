@@ -1,0 +1,33 @@
+{
+    "Casual": {
+        "do_colors": ["Denim Blue", "White", "Beige", "Olive Green", "Grey"],
+        "dont_colors": ["Sequins", "All-black formal suiting", "Metallic fabrics"],
+        "maps_to_recommender": "Casual"
+    },
+    "Office/Formal": {
+        "do_colors": ["Navy", "Charcoal", "White", "Soft Blue", "Muted Burgundy"],
+        "dont_colors": ["Neon colors", "Loud prints", "Flashy metallics"],
+        "maps_to_recommender": "Formal"
+    },
+    "Wedding Guest": {
+        "do_colors": ["Emerald Green", "Sapphire Blue", "Blush Pink", "Champagne", "Soft Florals"],
+        "dont_colors": ["Pure White/Ivory (reserved for the bride)", "All Black", "Overly casual denim"],
+        "maps_to_recommender": "Formal"
+    },
+    "Party": {
+        "do_colors": ["Metallics", "Sequins", "Deep Red", "Black", "Jewel Tones"],
+        "dont_colors": ["Plain neutrals", "Overly muted pastels"],
+        "maps_to_recommender": "Party"
+    },
+    "Date Night": {
+        "do_colors": ["Red", "Burgundy", "Black", "Deep Emerald", "Soft Pink"],
+        "dont_colors": ["Overly casual sportswear colors", "Baggy neutral tones"],
+        "maps_to_recommender": "Party"
+    },
+    "Outdoor": {
+        "do_colors": ["Khaki", "Olive Green", "Denim", "Earthy Brown", "Neutral Beige"],
+        "dont_colors": ["Pure White (stains easily)", "Delicate pastel silk"],
+        "maps_to_recommender": "Casual"
+    }
+}
+

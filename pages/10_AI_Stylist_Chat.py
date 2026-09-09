@@ -95,17 +95,15 @@ if "chat_greeted" not in st.session_state:
 # fresh analysis (chat_greeted resets to False in set_analysis_context).
 # ---------------------------------------------------------------
 if not st.session_state.chat_greeted and detected_skin_tone and len(st.session_state.chat_messages) == 0:
-    with st.chat_message("assistant", avatar="🎨"):
-        typing_placeholder = st.empty()
-        typing_placeholder.markdown(TYPING_DOTS_HTML, unsafe_allow_html=True)
+    st.session_state.chat_greeted = True
 
+    with st.spinner("Your stylist is typing..."):
         greeting = get_greeting_reply(skin_tone=detected_skin_tone, occasion=detected_occasion)
 
-        typing_placeholder.empty()
-        if greeting["error"] is None:
-            st.markdown(greeting["reply"])
-            st.session_state.chat_messages.append({"role": "assistant", "content": greeting["reply"]})
-    st.session_state.chat_greeted = True
+    if greeting["error"] is None:
+        st.session_state.chat_messages.append({"role": "assistant", "content": greeting["reply"]})
+    else:
+        st.error(f"Something went wrong: {greeting['error']}")
 
 incoming_message = None
 

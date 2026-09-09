@@ -14,9 +14,6 @@ MODEL_NAME = "openai/gpt-oss-20b"
 
 
 def build_system_prompt(skin_tone, occasion=None):
-    """Builds the AI's standing instructions, including whatever
-    context we currently know about the user, plus scope-limiting
-    rules so the bot stays focused on fashion."""
     if skin_tone:
         context_line = f"The user has a {skin_tone} skin tone."
     else:
@@ -48,8 +45,6 @@ def build_system_prompt(skin_tone, occasion=None):
 
 
 def get_chatbot_reply(conversation_history, skin_tone, occasion=None):
-    """Sends the conversation + fresh context to Groq and returns the reply.
-    Always returns {"error": None or "message", "reply": "..." or None}."""
     try:
         system_message = {"role": "system", "content": build_system_prompt(skin_tone, occasion)}
         full_messages = [system_message] + conversation_history
@@ -67,29 +62,31 @@ def get_chatbot_reply(conversation_history, skin_tone, occasion=None):
 
 def get_greeting_reply(skin_tone, occasion=None):
     """
-    Generates a personalized OPENING message with no real user question —
-    this is what makes the chat feel like the AI 'already knows' the user
-    the moment they arrive.
+    Generates a personalized OPENING message with no real user question.
+    Now explicitly asks the AI to reference the specific occasion
+    (e.g. 'Wedding Guest'), not just the skin tone.
     """
+    occasion_note = ""
+    if occasion:
+        occasion_note = (
+            f" I'm dressing for a specific occasion: {occasion}. "
+            "Include one tip that's specifically relevant to that occasion."
+        )
+
     kickoff_instruction = {
         "role": "user",
         "content": (
             "Greet me warmly and briefly introduce yourself as my personal "
             "stylist. Summarize my skin tone analysis result in one sentence, "
-            "then give 2-3 quick top color tips based on it. Keep it short "
-            "and friendly, like the start of a conversation, not a report."
+            f"then give 2-3 quick top color tips based on it.{occasion_note} "
+            "Keep it short and friendly, like the start of a conversation, "
+            "not a report."
         )
     }
     return get_chatbot_reply(conversation_history=[kickoff_instruction], skin_tone=skin_tone, occasion=occasion)
 
 
 def set_analysis_context(skin_tone, occasion=None, image_path=None):
-    """
-    Call this right after ANY successful analysis in the app (skin tone
-    detection, outfit compatibility, etc.) so the chatbot can pick up
-    the latest context automatically. This is the single standardized
-    place all analysis results should be recorded for chat purposes.
-    """
     st.session_state["stylist_context"] = {
         "skin_tone": skin_tone,
         "occasion": occasion,
