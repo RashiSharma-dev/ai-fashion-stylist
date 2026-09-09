@@ -60,6 +60,7 @@ TYPING_DOTS_HTML = '<div class="typing-dots"><span></span><span></span><span></s
 context = st.session_state.get("stylist_context", {})
 detected_skin_tone = context.get("skin_tone")
 detected_occasion = context.get("occasion")
+detected_body_shape = context.get("body_shape")
 
 if not detected_skin_tone:
     # backward-compatible fallback, same as Day 59
@@ -75,6 +76,8 @@ with st.sidebar:
         st.success(f"Detected: **{detected_skin_tone}**")
         if detected_occasion:
             st.caption(f"Occasion: {detected_occasion}")
+        if detected_body_shape:
+            st.caption(f"Body Shape: {detected_body_shape}")
         override = st.selectbox("Override for testing (optional):", ["Use detected value", "warm", "cool", "neutral"])
         if override != "Use detected value":
             detected_skin_tone = override
@@ -98,7 +101,7 @@ if not st.session_state.chat_greeted and detected_skin_tone and len(st.session_s
     st.session_state.chat_greeted = True
 
     with st.spinner("Your stylist is typing..."):
-        greeting = get_greeting_reply(skin_tone=detected_skin_tone, occasion=detected_occasion)
+        greeting = get_greeting_reply(skin_tone=detected_skin_tone, occasion=detected_occasion, body_shape=detected_body_shape)
 
     if greeting["error"] is None:
         st.session_state.chat_messages.append({"role": "assistant", "content": greeting["reply"]})
@@ -152,7 +155,8 @@ if incoming_message:
         result = get_chatbot_reply(
             conversation_history=st.session_state.chat_messages,
             skin_tone=detected_skin_tone,
-            occasion=detected_occasion
+            occasion=detected_occasion,
+            body_shape=detected_body_shape
         )
 
         typing_placeholder.empty()

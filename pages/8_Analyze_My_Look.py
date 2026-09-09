@@ -10,11 +10,12 @@ from color_recommender import analyze_and_recommend
 from recommender import OutfitRecommender
 from chatbot import set_analysis_context
 from occasion_advisor import get_occasion_guidance, map_to_recommender_occasion
+from style_advisor import get_combined_style_advice
 
 st.title("✨ Analyze My Look")
-st.write("Take a photo, pick your occasion and season, then click one button to get your full personalized style analysis.")
+st.write("Take a photo, pick your occasion, season, and body shape, then click one button to get your full personalized style analysis.")
 
-# --- Occasion selector: styled icon buttons instead of a plain dropdown ---
+# --- Occasion selector: styled icon buttons ---
 st.subheader("Choose Your Occasion")
 
 OCCASIONS = [
@@ -40,7 +41,6 @@ for index, (name, icon) in enumerate(OCCASIONS):
 
 occasion = st.session_state.selected_occasion
 
-# Show DO / DON'T color tips for the chosen occasion
 guidance_result = get_occasion_guidance(occasion)
 if guidance_result["error"] is None:
     with st.expander(f"💡 Color tips for {occasion}"):
@@ -50,6 +50,27 @@ if guidance_result["error"] is None:
         st.markdown(f"**Avoid:** {dont_list}")
 
 season = st.selectbox("Season", ["Summer", "Winter"])
+
+# --- Body shape selector: SELF-SELECTED, not auto-detected ---
+st.subheader("Your Body Shape")
+st.caption(
+    "We ask you to self-select for now, since reliable automated detection "
+    "requires full-body pose estimation — see the README's Future Scope "
+    "section for more on that."
+)
+
+BODY_SHAPES = ["Hourglass", "Pear", "Apple", "Rectangle", "Inverted Triangle"]
+body_shape = st.selectbox("Select your body shape", BODY_SHAPES)
+
+from body_shape_advisor import get_body_shape_guidance
+shape_guidance_result = get_body_shape_guidance(body_shape)
+if shape_guidance_result["error"] is None:
+    with st.expander(f"💡 Fit tips for {body_shape}"):
+        st.write(shape_guidance_result["guidance"]["description"])
+        fits = ", ".join(shape_guidance_result["guidance"]["recommended_fits"])
+        avoid = ", ".join(shape_guidance_result["guidance"]["avoid_fits"])
+        st.markdown(f"**Look for:** {fits}")
+        st.markdown(f"**Avoid:** {avoid}")
 
 camera_photo = st.camera_input("Take a photo")
 
@@ -71,9 +92,6 @@ if analyze_clicked:
         st.error(result["error"])
     else:
         skin_tone = result["skin_tone"]
-
-        # Map the specific occasion (e.g. "Wedding Guest") down to the
-        # broad category ("Formal") that the scoring engine understands
         recommender_occasion = map_to_recommender_occasion(occasion)
 
         with st.spinner("Finding outfits that match your style..."):
@@ -83,18 +101,22 @@ if analyze_clicked:
                 outfit["scores"] = recommender.calculate_match_score(outfit)
             time.sleep(0.5)
 
-        # Let the AI Stylist chatbot know about this analysis, using the
-        # SPECIFIC occasion (not the mapped broad category) so it can give
-        # hyper-specific advice like "for a wedding guest look..."
         set_analysis_context(
             skin_tone=skin_tone,
             occasion=occasion,
-            image_path=save_path
+            image_path=save_path,
+            body_shape=body_shape
         )
 
         st.balloons()
 
         st.subheader(f"Detected Skin Tone: {skin_tone.upper()}")
+
+        # --- Combined style advice: skin tone + occasion + body shape ---
+        combined_result = get_combined_style_advice(skin_tone, occasion, body_shape)
+        if combined_result["error"] is None:
+            st.info(combined_result["advice"])
+
         st.subheader(f"Top {len(outfits)} Outfits For You")
 
         for row_start in range(0, len(outfits), 3):

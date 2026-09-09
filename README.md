@@ -105,5 +105,13 @@ skin tone analysis.
 `Groq API` · `openai/gpt-oss-20b` · `python-dotenv` (secure key storage) ·
 Streamlit `st.chat_message` / `st.chat_input`
 
+## 🔭 Future Scope
+
+- **Automated body shape detection**: Currently, body shape is self-selected
+  by the user via a dropdown. Reliable automated detection would require
+  full-body pose estimation and is sensitive to camera angle and clothing —
+  a substantial computer vision project on its own, intentionally out of
+  scope for this version.
+
 ## Author
 Rashi Sharma

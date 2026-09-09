@@ -1,0 +1,27 @@
+{
+    "Hourglass": {
+        "description": "Bust and hips are balanced, with a clearly defined waist.",
+        "recommended_fits": ["Wrap dresses", "Belted outfits", "Fitted tops", "Pencil skirts"],
+        "avoid_fits": ["Boxy, oversized shapes that hide the waist"]
+    },
+    "Pear": {
+        "description": "Hips are wider than the bust and shoulders.",
+        "recommended_fits": ["A-line skirts and dresses", "Structured shoulder tops", "Dark bottoms paired with brighter tops"],
+        "avoid_fits": ["Clingy, tight-fitting bottoms", "Skinny fits that draw attention to the hips"]
+    },
+    "Apple": {
+        "description": "Fuller midsection with a less defined waist.",
+        "recommended_fits": ["Empire waistlines", "Flowy tops", "V-neck tops", "Open structured blazers"],
+        "avoid_fits": ["Clingy fabrics around the midsection", "Tight high-waisted belts"]
+    },
+    "Rectangle": {
+        "description": "Bust, waist, and hips are similar in width, with minimal curve definition.",
+        "recommended_fits": ["Peplum tops", "Belted waists to create definition", "Layered looks"],
+        "avoid_fits": ["Shapeless, boxy oversized fits"]
+    },
+    "Inverted Triangle": {
+        "description": "Shoulders and bust are broader than the hips.",
+        "recommended_fits": ["A-line or flared bottoms", "Wide-leg trousers", "V-neck tops", "Darker tops with brighter bottoms"],
+        "avoid_fits": ["Boat necks", "Shoulder pads or embellished shoulders"]
+    }
+}
