@@ -1,0 +1,26 @@
+{
+    "pantone_color_of_year": {
+        "2024": {"name": "Peach Fuzz", "hex": "#FFBE98", "undertone": "warm", "description": "A soft, velvety peach that radiates warmth and a caring touch."},
+        "2025": {"name": "Mocha Mousse", "hex": "#A47764", "undertone": "warm", "description": "A warm, nurturing brown reflecting a desire for comfort and simple pleasures."},
+        "2026": {"name": "Cloud Dancer", "hex": "#F0EEE9", "undertone": "neutral", "description": "A lofty, billowy white symbolizing calm and quiet reflection."}
+    },
+    "trending_by_year": {
+        "2024": [
+            {"name": "Peach Fuzz", "hex": "#FFBE98", "undertone": "warm"},
+            {"name": "Electric Blue", "hex": "#0057FF", "undertone": "cool"},
+            {"name": "Sage Green", "hex": "#B2AC88", "undertone": "neutral"}
+        ],
+        "2025": [
+            {"name": "Mocha Mousse", "hex": "#A47764", "undertone": "warm"},
+            {"name": "Butter Yellow", "hex": "#FFF3B0", "undertone": "warm"},
+            {"name": "Cherry Red", "hex": "#B22222", "undertone": "cool"},
+            {"name": "Aqua Foam", "hex": "#A0E7E5", "undertone": "cool"}
+        ],
+        "2026": [
+            {"name": "Cloud Dancer", "hex": "#F0EEE9", "undertone": "neutral"},
+            {"name": "Terracotta Blush", "hex": "#E2725B", "undertone": "warm"},
+            {"name": "Deep Teal", "hex": "#014D4E", "undertone": "cool"},
+            {"name": "Soft Lilac", "hex": "#C8A2C8", "undertone": "cool"}
+        ]
+    }
+}
