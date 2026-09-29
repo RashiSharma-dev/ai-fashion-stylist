@@ -1,0 +1,61 @@
+{
+    "questions": [
+        {
+            "question": "Which best describes your everyday style?",
+            "options": [
+                {"text": "Clean lines, neutral colors, timeless pieces", "persona": "Classic Minimalist"},
+                {"text": "Statement pieces, bold prints, lots of color", "persona": "Bold Maximalist"},
+                {"text": "Flowy fabrics, earthy tones, free-spirited layers", "persona": "Boho Chic"}
+            ]
+        },
+        {
+            "question": "What does your ideal weekend look like?",
+            "options": [
+                {"text": "Quiet coffee shop, simple errands", "persona": "Classic Minimalist"},
+                {"text": "A party, concert, or event to dress up for", "persona": "Bold Maximalist"},
+                {"text": "Outdoor market, nature walk, or festival", "persona": "Boho Chic"}
+            ]
+        },
+        {
+            "question": "Pick your favorite color palette:",
+            "options": [
+                {"text": "Black, white, navy, grey", "persona": "Classic Minimalist"},
+                {"text": "Hot pink, electric blue, gold, red", "persona": "Bold Maximalist"},
+                {"text": "Terracotta, mustard, olive, rust", "persona": "Boho Chic"}
+            ]
+        },
+        {
+            "question": "What's usually missing from your wardrobe?",
+            "options": [
+                {"text": "A few perfectly tailored basics", "persona": "Classic Minimalist"},
+                {"text": "More eye-catching statement pieces", "persona": "Bold Maximalist"},
+                {"text": "Comfortable, artsy, layered pieces", "persona": "Boho Chic"}
+            ]
+        },
+        {
+            "question": "How do you want people to describe your style?",
+            "options": [
+                {"text": "Polished and put-together", "persona": "Classic Minimalist"},
+                {"text": "Fearless and unforgettable", "persona": "Bold Maximalist"},
+                {"text": "Effortless and free-spirited", "persona": "Boho Chic"}
+            ]
+        }
+    ],
+    "personas": {
+        "Classic Minimalist": {
+            "description": "You love clean lines, timeless pieces, and a neutral palette that never goes out of style.",
+            "preferred_colors": ["Black", "White", "Navy", "Grey", "Beige"],
+            "preferred_fits": ["Tailored", "Structured", "Simple silhouettes"]
+        },
+        "Bold Maximalist": {
+            "description": "You're drawn to statement pieces, vibrant colors, and outfits that turn heads.",
+            "preferred_colors": ["Hot Pink", "Electric Blue", "Gold", "Red"],
+            "preferred_fits": ["Statement pieces", "Bold prints", "Layered accessories"]
+        },
+        "Boho Chic": {
+            "description": "You gravitate toward flowy fabrics, earthy tones, and a relaxed, free-spirited look.",
+            "preferred_colors": ["Terracotta", "Mustard", "Olive", "Rust"],
+            "preferred_fits": ["Flowy silhouettes", "Layered textures", "Natural fabrics"]
+        }
+    }
+}

@@ -101,11 +101,12 @@ if analyze_clicked:
                 outfit["scores"] = recommender.calculate_match_score(outfit)
             time.sleep(0.5)
 
-        set_analysis_context(
+            set_analysis_context(
             skin_tone=skin_tone,
             occasion=occasion,
             image_path=save_path,
-            body_shape=body_shape
+            body_shape=body_shape,
+            style_personality=style_personality
         )
 
         st.balloons()
@@ -113,7 +114,8 @@ if analyze_clicked:
         st.subheader(f"Detected Skin Tone: {skin_tone.upper()}")
 
         # --- Combined style advice: skin tone + occasion + body shape ---
-        combined_result = get_combined_style_advice(skin_tone, occasion, body_shape)
+        style_personality = st.session_state.get("style_personality")
+        combined_result = get_combined_style_advice(skin_tone, occasion, body_shape, style_personality)
         if combined_result["error"] is None:
             st.info(combined_result["advice"])
 
