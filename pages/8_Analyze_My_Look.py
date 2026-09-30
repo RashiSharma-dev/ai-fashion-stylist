@@ -11,6 +11,8 @@ from recommender import OutfitRecommender
 from chatbot import set_analysis_context
 from occasion_advisor import get_occasion_guidance, map_to_recommender_occasion
 from style_advisor import get_combined_style_advice
+from body_shape_advisor import get_body_shape_guidance
+from analytics import log_event
 
 st.title("✨ Analyze My Look")
 st.write("Take a photo, pick your occasion, season, and body shape, then click one button to get your full personalized style analysis.")
@@ -62,7 +64,6 @@ st.caption(
 BODY_SHAPES = ["Hourglass", "Pear", "Apple", "Rectangle", "Inverted Triangle"]
 body_shape = st.selectbox("Select your body shape", BODY_SHAPES)
 
-from body_shape_advisor import get_body_shape_guidance
 shape_guidance_result = get_body_shape_guidance(body_shape)
 if shape_guidance_result["error"] is None:
     with st.expander(f"💡 Fit tips for {body_shape}"):
@@ -94,6 +95,10 @@ if analyze_clicked:
         skin_tone = result["skin_tone"]
         recommender_occasion = map_to_recommender_occasion(occasion)
 
+        # Read the quiz result (None if the user hasn't taken the quiz yet).
+        # This MUST come before set_analysis_context, which uses it.
+        style_personality = st.session_state.get("style_personality")
+
         with st.spinner("Finding outfits that match your style..."):
             recommender = OutfitRecommender()
             outfits = recommender.recommend(skin_tone, recommender_occasion, season, top_n=5)
@@ -101,7 +106,7 @@ if analyze_clicked:
                 outfit["scores"] = recommender.calculate_match_score(outfit)
             time.sleep(0.5)
 
-            set_analysis_context(
+        set_analysis_context(
             skin_tone=skin_tone,
             occasion=occasion,
             image_path=save_path,
@@ -109,12 +114,20 @@ if analyze_clicked:
             style_personality=style_personality
         )
 
+        # --- Day 69: record this analysis for the Dashboard ---
+        log_event("photo_analyzed")
+        log_event("occasion_selected", occasion)
+        recommended_colors = []
+        for outfit in outfits:
+            recommended_colors.append(outfit["top_color"])
+            recommended_colors.append(outfit["bottom_color"])
+        log_event("color_recommended", recommended_colors)
+
         st.balloons()
 
         st.subheader(f"Detected Skin Tone: {skin_tone.upper()}")
 
-        # --- Combined style advice: skin tone + occasion + body shape ---
-        style_personality = st.session_state.get("style_personality")
+        # --- Combined style advice: skin tone + occasion + body shape + quiz persona ---
         combined_result = get_combined_style_advice(skin_tone, occasion, body_shape, style_personality)
         if combined_result["error"] is None:
             st.info(combined_result["advice"])
