@@ -6,6 +6,9 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from color_recommender import analyze_and_recommend
+from theme import apply_theme
+
+apply_theme()
 
 st.title("📸 Webcam Skin Tone Capture")
 st.write("Take a live photo with your webcam to instantly check your skin tone.")
@@ -35,7 +38,7 @@ if camera_photo is not None:
         for col, color in zip(swatch_cols, recommended_colors):
             with col:
                 st.markdown(
-                    f"""<div style="background-color:{color['hex']}; height:50px; border-radius:5px; border:1px solid #444;"></div>""",
+                    f"""<div style="background-color:{color['hex']}; height:50px; border-radius:5px; border:1px solid var(--color-primary);"></div>""",
                     unsafe_allow_html=True
                 )
                 st.caption(color["name"])

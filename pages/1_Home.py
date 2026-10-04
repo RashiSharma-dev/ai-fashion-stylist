@@ -4,6 +4,9 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from trending_colors import get_trending_colors, get_pantone_color_of_year, check_color_compatibility
+from theme import apply_theme
+
+apply_theme()
 
 st.title("🏠 Home")
 st.write("Welcome to AI Fashion Color Fit Matcher!")
@@ -30,12 +33,12 @@ pantone_result = get_pantone_color_of_year()
 if pantone_result["error"] is None:
     pantone = pantone_result["pantone"]
     st.markdown(f"""
-    <div style="border:2px solid #D96C8C; border-radius:12px; padding:16px; margin-bottom:16px;">
+    <div style="border:2px solid var(--color-primary); border-radius:12px; padding:16px; margin-bottom:16px; background-color:var(--color-secondary);">
         <div style="display:flex; align-items:center; gap:12px;">
-            <div style="background-color:{pantone['hex']}; width:60px; height:60px; border-radius:8px; border:1px solid #444;"></div>
+            <div style="background-color:{pantone['hex']}; width:60px; height:60px; border-radius:8px; border:1px solid var(--color-primary);"></div>
             <div>
                 <b>⭐ Pantone Color of the Year: {pantone['name']}</b><br>
-                <span style="color:#FFB6C1;">{pantone['description']}</span>
+                <span style="color:var(--color-text);">{pantone['description']}</span>
             </div>
         </div>
     </div>
@@ -49,7 +52,7 @@ if trending_result["error"] is None:
         with col:
             st.markdown(f"""
             <div style="text-align:center;">
-                <div style="background-color:{color['hex']}; width:100%; height:60px; border-radius:8px; border:1px solid #444; margin-bottom:6px;"></div>
+                <div style="background-color:{color['hex']}; width:100%; height:60px; border-radius:8px; border:1px solid var(--color-primary); margin-bottom:6px;"></div>
                 <span>{color['name']}</span>
             </div>
             """, unsafe_allow_html=True)

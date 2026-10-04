@@ -6,6 +6,9 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from outfit_compatibility import check_outfit_compatibility
+from theme import apply_theme
+
+apply_theme()
 
 st.title("✨ Outfit + Skin Tone Compatibility Checker")
 st.write("Upload a selfie and an outfit photo to see if the color works for you.")

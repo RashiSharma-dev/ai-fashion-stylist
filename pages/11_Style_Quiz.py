@@ -8,6 +8,9 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from style_quiz import load_style_quiz, calculate_style_personality, get_persona_details
+from theme import apply_theme
+
+apply_theme()
 
 st.title("✨ What's Your Style Personality?")
 st.write("Answer these 5 quick questions to find your Style Personality — it'll help personalize your recommendations and chat advice.")

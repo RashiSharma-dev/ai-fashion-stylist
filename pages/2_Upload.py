@@ -7,6 +7,9 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from color_recommender import analyze_and_recommend
 from color_swatches import make_swatch
+from theme import apply_theme
+
+apply_theme()
 
 st.title("📤 Upload Photo")
 
@@ -29,7 +32,10 @@ if uploaded is not None:
     if st.button("Analyze My Skin Tone"):
         result = analyze_and_recommend(temp_path)
 
-        if result:
+        # Our AI functions return {"error": None or "message", ...data}
+        if result.get("error"):
+            st.error(result["error"])
+        else:
             st.session_state.skin_tone_result = result
             st.success(f"Your skin tone is: **{result['skin_tone'].upper()}**")
 
@@ -41,5 +47,3 @@ if uploaded is not None:
                 with cols[i]:
                     st.image(swatch)
                     st.caption(color['name'])
-        else:
-            st.error("No face detected. Please try a clearer photo.")

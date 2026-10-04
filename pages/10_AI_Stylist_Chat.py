@@ -5,24 +5,35 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.chatbot import get_chatbot_reply, get_greeting_reply
+from src.analytics import log_event
+from src.theme import apply_theme
+
+apply_theme()
 
 st.title("💬 Chat with Your AI Stylist")
 
 st.markdown("""
 <style>
-div[data-testid="stChatMessage"]:has(img[data-testid="stChatMessageAvatarUser"]) {
+/* User messages: pink bubble, aligned right */
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
     flex-direction: row-reverse;
     text-align: right;
 }
-div[data-testid="stChatMessage"]:has(img[data-testid="stChatMessageAvatarUser"]) div[data-testid="stChatMessageContent"] {
-    background-color: #D96C8C;
-    color: #0E1117;
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) div[data-testid="stChatMessageContent"] {
+    background-color: var(--color-primary);
+    color: var(--color-background);
     border-radius: 16px;
     padding: 10px 16px;
 }
-div[data-testid="stChatMessage"]:has(img[data-testid="stChatMessageAvatarAssistant"]) div[data-testid="stChatMessageContent"] {
-    background-color: #1C1F26;
-    color: #FFB6C1;
+/* Text INSIDE the pink user bubble must be dark (the theme colors paragraphs pink) */
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) div[data-testid="stChatMessageContent"] p,
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) div[data-testid="stChatMessageContent"] li {
+    color: var(--color-background);
+}
+/* Assistant messages: dark bubble */
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) div[data-testid="stChatMessageContent"] {
+    background-color: var(--color-secondary);
+    color: var(--color-text);
     border-radius: 16px;
     padding: 10px 16px;
 }
@@ -34,7 +45,7 @@ div[data-testid="stChatMessage"]:has(img[data-testid="stChatMessageAvatarAssista
   display: inline-block;
   width: 8px; height: 8px;
   margin: 0 2px;
-  background-color: #FFB6C1;
+  background-color: var(--color-text);
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -122,6 +133,9 @@ if incoming_message:
     with st.chat_message("user", avatar="🧑"):
         st.markdown(incoming_message)
     st.session_state.chat_messages.append({"role": "user", "content": incoming_message})
+
+    # --- Day 69: count this chat message for the Dashboard ---
+    log_event("chat_message")
 
     with st.chat_message("assistant", avatar="🎨"):
         typing_placeholder = st.empty()

@@ -2,14 +2,16 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 from src.analytics import load_analytics, get_top_colors, get_occasion_breakdown
+from src.theme import apply_theme, PALETTE
 
 st.set_page_config(page_title="Your Dashboard", page_icon="📊", layout="wide")
+apply_theme()
 
-# Our theme colors, reused inside the charts so they match the app
-BG = "#1C1F26"
-PINK = "#D96C8C"
-TEXT = "#FFB6C1"
-PIE_COLORS = ["#D96C8C", "#FFB6C1", "#B8547A", "#F2A0B5", "#8E3B5C", "#FFD1DC"]
+# Chart colors come from the central palette, so charts match the app
+BG = PALETTE["secondary"]
+PINK = PALETTE["primary"]
+TEXT = PALETTE["text"]
+PIE_COLORS = [PALETTE["primary"], PALETTE["accent"], PALETTE["text"], "#B8547A", "#8E3B5C", "#F2A0B5"]
 
 
 def style_axes(fig, ax):
@@ -67,7 +69,7 @@ with right:
         colors = [PIE_COLORS[i % len(PIE_COLORS)] for i in range(len(labels))]
         fig, ax = plt.subplots(figsize=(6, 4))
         fig.patch.set_facecolor(BG)
-        ax.pie(
+        wedges, texts, autotexts = ax.pie(
             sizes,
             labels=labels,
             colors=colors,
@@ -75,6 +77,10 @@ with right:
             textprops={"color": TEXT},
             wedgeprops={"edgecolor": BG},
         )
+        # Percentage labels sit ON the slices, so make them dark for contrast
+        for t in autotexts:
+            t.set_color(PALETTE["background"])
+            t.set_fontweight("bold")
         st.pyplot(fig)
         plt.close(fig)
 

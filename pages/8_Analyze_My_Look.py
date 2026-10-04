@@ -13,6 +13,9 @@ from occasion_advisor import get_occasion_guidance, map_to_recommender_occasion
 from style_advisor import get_combined_style_advice
 from body_shape_advisor import get_body_shape_guidance
 from analytics import log_event
+from theme import apply_theme
+
+apply_theme()
 
 st.title("✨ Analyze My Look")
 st.write("Take a photo, pick your occasion, season, and body shape, then click one button to get your full personalized style analysis.")
@@ -144,8 +147,10 @@ if analyze_clicked:
                     bottom_hex = recommender.get_color_hex(outfit["bottom_color"])
                     score = outfit["scores"]["total"]
 
+                    # Card border uses the theme's secondary color via a CSS variable.
+                    # The two swatches keep the REAL outfit colors (top_hex / bottom_hex).
                     st.markdown(f"""
-                    <div style="border:1px solid #444; border-radius:10px; padding:12px; margin-bottom:10px;">
+                    <div style="border:1px solid var(--color-primary); border-radius:10px; padding:12px; margin-bottom:10px; background-color:var(--color-secondary);">
                         <div style="display:flex; gap:5px; margin-bottom:8px;">
                             <div style="background-color:{top_hex}; width:50%; height:40px; border-radius:5px;"></div>
                             <div style="background-color:{bottom_hex}; width:50%; height:40px; border-radius:5px;"></div>

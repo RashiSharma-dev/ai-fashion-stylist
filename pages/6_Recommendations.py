@@ -12,6 +12,10 @@ from recommender import OutfitRecommender
 from user_profile import save_profile, load_profile
 from torso_overlay import apply_torso_overlay
 from report_generator import generate_style_report
+from analytics import log_event
+from theme import apply_theme
+
+apply_theme()
 
 st.title("👗 Your Outfit Recommendations")
 
@@ -98,6 +102,15 @@ all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gen
 total_found = len(all_outfits)
 display_outfits = all_outfits[:5]
 
+# --- Day 69: count this view ONCE per filter combination ---
+# Streamlit reruns the page on every click, so we remember the last
+# combination we logged and only log when it changes.
+view_key = f"{skin_tone}-{occasion}-{season}-{gender}-{style}"
+if display_outfits and st.session_state.get("last_logged_view") != view_key:
+    log_event("outfit_viewed")
+    log_event("occasion_selected", occasion)
+    st.session_state["last_logged_view"] = view_key
+
 st.subheader(f"Showing {len(display_outfits)} of {total_found} matching outfits")
 
 for row_start in range(0, len(display_outfits), 3):
@@ -111,6 +124,7 @@ for row_start in range(0, len(display_outfits), 3):
             scores = outfit["scores"]
             total = scores["total"]
 
+            # Traffic-light colors for the match bar are intentional (green/yellow/red)
             if total >= 80:
                 bar_color = "#4CAF50"
             elif total >= 50:
@@ -119,15 +133,15 @@ for row_start in range(0, len(display_outfits), 3):
                 bar_color = "#F44336"
 
             st.markdown(f"""
-            <div style="border:1px solid #444; border-radius:10px; padding:12px; margin-bottom:10px;">
+            <div style="border:1px solid var(--color-primary); border-radius:10px; padding:12px; margin-bottom:10px; background-color:var(--color-secondary);">
                 <div style="display:flex; gap:5px; margin-bottom:8px;">
                     <div style="background-color:{top_hex}; width:50%; height:40px; border-radius:5px;"></div>
                     <div style="background-color:{bottom_hex}; width:50%; height:40px; border-radius:5px;"></div>
                 </div>
                 <b>Outfit #{outfit['outfit_id']}</b><br>
                 {outfit['top_color']} + {outfit['bottom_color']}<br>
-                <span style="background-color:#D96C8C; padding:2px 8px; border-radius:8px; font-size:12px;">{outfit['occasion']}</span>
-                <div style="background-color:#333; border-radius:5px; height:12px; width:100%; margin-top:10px;">
+                <span style="background-color:var(--color-primary); color:var(--color-background); padding:2px 8px; border-radius:8px; font-size:12px;">{outfit['occasion']}</span>
+                <div style="background-color:var(--color-background); border-radius:5px; height:12px; width:100%; margin-top:10px;">
                     <div style="background-color:{bar_color}; width:{total}%; height:12px; border-radius:5px;"></div>
                 </div>
                 <p style="font-size:13px; margin-top:5px; margin-bottom:0;"><b>{total}% Match</b></p>

@@ -9,6 +9,9 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from torso_overlay import apply_torso_overlay
 from outfit_compatibility import get_all_known_colors, identify_color_name
+from theme import apply_theme
+
+apply_theme()
 
 st.title("🎨 Virtual Try-On: Color Overlay")
 st.write("Upload a photo, pick a color, and preview how it would look on you.")
