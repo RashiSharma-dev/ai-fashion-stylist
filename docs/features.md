@@ -44,6 +44,8 @@ The AI Fashion Color Fit Matcher is a Streamlit web app that detects your skin t
 | User profile save/load | Saves a user's results so they can be loaded again later. | Advanced | `src/user_profile.py` |
 | Downloadable style report | Exports the user's results as an HTML report. | Advanced | `src/report_generator.py` |
 
+| Mirror Mode | A full-screen "smart mirror" page with a camera, live outfit cards, and a built-in stylist chat. | Advanced | `pages/13_Mirror_Mode.py` |
+
 ## 4. Virtual Try-On
 
 | Feature | Description | Label | Main files |
@@ -99,3 +101,4 @@ The AI Fashion Color Fit Matcher is a Streamlit web app that detects your skin t
 - Body shape is **self-selected**, not auto-detected, because reliable detection needs full-body pose estimation.
 - The recommendation database is limited to 150 outfits.
 - Skin tone detection works best in even lighting.
+- Mirror Mode uses single-photo capture; continuous live video would need `streamlit-webrtc`.
