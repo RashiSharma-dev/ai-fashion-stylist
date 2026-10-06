@@ -96,9 +96,12 @@ The AI Fashion Color Fit Matcher is a Streamlit web app that detects your skin t
 | Home page | Introduces the app and shows trending colors. | MVP | `pages/1_Home.py` |
 | Secure API key handling | Keeps the Groq key in a gitignored `.env` file so it never reaches GitHub. | MVP | `.env`, `.gitignore` |
 
+| Mobile responsive layout | Phone and tablet breakpoints with thumb-sized buttons, scaled headings, and images that fit small screens. | Optional | `src/theme.py`, `docs/mobile_test.md` |
+
 ## Known Limitations and Future Scope
 
 - Body shape is **self-selected**, not auto-detected, because reliable detection needs full-body pose estimation.
 - The recommendation database is limited to 150 outfits.
 - Skin tone detection works best in even lighting.
 - Mirror Mode uses single-photo capture; continuous live video would need `streamlit-webrtc`.
+- Camera features need HTTPS on phones; full mobile camera testing happens after deployment.
