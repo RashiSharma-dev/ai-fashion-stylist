@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from outfit_compatibility import check_outfit_compatibility
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -32,7 +33,8 @@ if selfie_file is not None and outfit_file is not None:
     col1.image(selfie_image, caption="Your Selfie", width="stretch")
     col2.image(outfit_image, caption="Your Outfit", width="stretch")
 
-    result = check_outfit_compatibility(selfie_path, outfit_path)
+    with st.spinner("Checking how this outfit works with your skin tone..."):
+        result = check_outfit_compatibility(selfie_path, outfit_path)
 
     if result.get("error"):
         st.error(result["error"])
@@ -45,3 +47,14 @@ if selfie_file is not None and outfit_file is not None:
 
         st.write(f"Detected skin tone: **{result['skin_tone'].upper()}**")
         st.color_picker("Outfit's dominant color", result["outfit_hex"], disabled=True)
+
+elif selfie_file is None and outfit_file is None:
+    empty_state(
+        "✨",
+        "Upload your selfie and an outfit photo to begin ↑",
+        "We'll check whether the outfit's main color suits your skin tone."
+    )
+elif selfie_file is None:
+    empty_state("🤳", "Now add your selfie ↑", "Your outfit photo is ready. We just need to see your face.")
+else:
+    empty_state("👕", "Now add your outfit photo ↑", "Your selfie is ready. Add the clothing you want to check.")

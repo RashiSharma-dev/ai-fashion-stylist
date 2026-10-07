@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 
 from src.theme import apply_theme
+from src.ui_states import empty_state
 
 # Must be the FIRST Streamlit command in the file
 st.set_page_config(page_title="AI Fashion Color Fit Matcher", page_icon="✨")
@@ -40,4 +41,8 @@ if uploaded is not None:
     st.write(f"Shape: {opencv_image.shape}")
     st.write(f"Width: {image.width}px, Height: {image.height}px")
 else:
-    st.write("Please upload a photo to see it here.")
+    empty_state(
+        "📸",
+        "Upload your photo to begin analysis ↑",
+        "JPG or PNG works best. Make sure your face is clearly visible."
+    )

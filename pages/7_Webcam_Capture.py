@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from color_recommender import analyze_and_recommend
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -23,7 +24,8 @@ if camera_photo is not None:
 
     st.image(image, caption="Your Captured Photo", width="stretch")
 
-    result = analyze_and_recommend(save_path)
+    with st.spinner("Analyzing your skin tone..."):
+        result = analyze_and_recommend(save_path)
 
     if result.get("error"):
         st.error(result["error"])
@@ -42,3 +44,9 @@ if camera_photo is not None:
                     unsafe_allow_html=True
                 )
                 st.caption(color["name"])
+else:
+    empty_state(
+        "📸",
+        "Take a photo to detect your skin tone ↑",
+        "Allow camera access if your browser asks, and face the light for the best result."
+    )

@@ -22,6 +22,7 @@ The AI Fashion Color Fit Matcher is a Streamlit web app that detects your skin t
 | Outfit compatibility check | Compares the outfit's colors against the user's skin tone from selfie and outfit photos. | MVP | `src/outfit_compatibility.py`, `pages/5_Outfit_Match.py` |
 | Outfit color extraction | Pulls the main colors out of an outfit photo. | MVP | `pages/4_Outfit_Colors.py` |
 | Input validation and error handling | Catches bad or missing photos and returns friendly error messages instead of crashing. | MVP | `src/image_validation.py` |
+| Loading and empty states | Every AI operation shows a loading message, and every empty section shows a friendly, styled placeholder with a hint. | Advanced | `src/ui_states.py`, `src/theme.py` |
 
 ## 2. Recommendation Engine
 

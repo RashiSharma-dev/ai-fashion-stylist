@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 from color_recommender import analyze_and_recommend
 from color_swatches import make_swatch
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -30,7 +31,8 @@ if uploaded is not None:
         f.write(uploaded.getbuffer())
 
     if st.button("Analyze My Skin Tone"):
-        result = analyze_and_recommend(temp_path)
+        with st.spinner("Analyzing your skin tone..."):
+            result = analyze_and_recommend(temp_path)
 
         # Our AI functions return {"error": None or "message", ...data}
         if result.get("error"):
@@ -47,3 +49,9 @@ if uploaded is not None:
                 with cols[i]:
                     st.image(swatch)
                     st.caption(color['name'])
+else:
+    empty_state(
+        "📤",
+        "Upload your photo to begin analysis ↑",
+        "Then click 'Analyze My Skin Tone' to see your recommended colors."
+    )

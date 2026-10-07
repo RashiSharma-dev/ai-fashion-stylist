@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from dominant_color_extractor import extract_dominant_colors
 from palette_generator import create_palette_image, rgb_to_hex
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -23,11 +24,18 @@ if uploaded_file is not None:
     save_path = "data/temp_clothing.jpg"
     image.convert("RGB").save(save_path)
 
-    colors = extract_dominant_colors(save_path)
-    palette_image = create_palette_image(colors)
+    with st.spinner("Extracting the dominant colors..."):
+        colors = extract_dominant_colors(save_path)
+        palette_image = create_palette_image(colors)
 
     st.subheader("Dominant Colors")
     st.image(palette_image)
 
     hex_codes = [rgb_to_hex(color) for color in colors]
     st.write(", ".join(hex_codes))
+else:
+    empty_state(
+        "👕",
+        "Upload a clothing photo to see its colors ↑",
+        "A photo of a single garment on a plain background works best."
+    )

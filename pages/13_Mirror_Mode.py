@@ -11,6 +11,7 @@ from recommender import OutfitRecommender
 from chatbot import get_chatbot_reply
 from analytics import log_event
 from theme import apply_theme
+from ui_states import empty_state
 
 # Must be the FIRST Streamlit command. Sidebar starts collapsed for the mirror feel.
 st.set_page_config(
@@ -174,8 +175,11 @@ with right:
     if st.session_state.mirror_error:
         st.warning(st.session_state.mirror_error)
     elif skin_tone is None:
-        st.subheader("Waiting for you...")
-        st.write("Take a photo on the left, and your personalized outfits will appear right here.")
+        empty_state(
+            "🪞",
+            "Waiting for you...",
+            "Take a photo on the left, and your personalized outfits will appear right here."
+        )
     else:
         st.markdown(
             f'<div class="mirror-tone">Your skin tone: {skin_tone.upper()}</div>',
@@ -190,6 +194,13 @@ with right:
 
         recommender = OutfitRecommender()
         outfits = recommender.recommend(skin_tone, occasion, season, top_n=3)
+
+        if not outfits:
+            empty_state(
+                "🔍",
+                "No outfits match this combination.",
+                "Try changing Occasion or Season above."
+            )
 
         for outfit in outfits:
             outfit["scores"] = recommender.calculate_match_score(outfit)

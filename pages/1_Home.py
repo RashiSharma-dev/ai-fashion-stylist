@@ -19,8 +19,11 @@ if "user_name" not in st.session_state:
 name = st.text_input("What's your name?", value=st.session_state.user_name)
 
 if st.button("Save Name"):
-    st.session_state.user_name = name
-    st.success(f"Saved! Welcome, {name}")
+    if name.strip():
+        st.session_state.user_name = name.strip()
+        st.success(f"Saved! Welcome, {name.strip()}")
+    else:
+        st.warning("Please type your name first, then click Save Name.")
 
 # ---------------------------------------------------------------
 # Trending Colors section

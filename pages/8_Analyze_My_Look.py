@@ -13,7 +13,8 @@ from occasion_advisor import get_occasion_guidance, map_to_recommender_occasion
 from style_advisor import get_combined_style_advice
 from body_shape_advisor import get_body_shape_guidance
 from analytics import log_event
-from theme import apply_theme
+from theme import apply_theme, show_loading
+from ui_states import empty_state
 
 apply_theme()
 
@@ -136,6 +137,12 @@ if analyze_clicked:
             st.info(combined_result["advice"])
 
         st.subheader(f"Top {len(outfits)} Outfits For You")
+        if not outfits:
+            empty_state(
+                "🔍",
+                "No outfits match this combination. Try changing Occasion or Season.",
+                "Your skin tone result above is still valid."
+            )
 
         for row_start in range(0, len(outfits), 3):
             row_outfits = outfits[row_start:row_start + 3]

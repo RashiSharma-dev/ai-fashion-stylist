@@ -10,6 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from torso_overlay import apply_torso_overlay
 from outfit_compatibility import get_all_known_colors, identify_color_name
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -38,6 +39,8 @@ if uploaded_file is not None:
     if color_name is None:
         color_name = "your chosen color"
 
+    # No spinner here on purpose: this re-runs on every slider move,
+    # and a spinner would flash constantly while dragging.
     result_bgr, error = apply_torso_overlay(image_bgr, chosen_bgr, strength)
 
     if error:
@@ -52,3 +55,9 @@ if uploaded_file is not None:
             st.image(image, caption="Original", width="stretch")
         with col2:
             st.image(result_rgb, caption=f"Try-On Preview ({strength}% strength)", width="stretch")
+else:
+    empty_state(
+        "🎨",
+        "Upload a photo to start trying on colors ↑",
+        "Face the camera directly so we can find your outfit area."
+    )

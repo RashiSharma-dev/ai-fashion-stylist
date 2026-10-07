@@ -14,6 +14,7 @@ from torso_overlay import apply_torso_overlay
 from report_generator import generate_style_report
 from analytics import log_event
 from theme import apply_theme
+from ui_states import empty_state
 
 apply_theme()
 
@@ -96,8 +97,9 @@ if tryon_photo is not None:
 if "preview_outfit_id" not in st.session_state:
     st.session_state.preview_outfit_id = None
 
-recommender = OutfitRecommender()
-all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style)
+with st.spinner("Finding outfits that match your filters..."):
+    recommender = OutfitRecommender()
+    all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style)
 
 total_found = len(all_outfits)
 display_outfits = all_outfits[:5]
@@ -112,6 +114,13 @@ if display_outfits and st.session_state.get("last_logged_view") != view_key:
     st.session_state["last_logged_view"] = view_key
 
 st.subheader(f"Showing {len(display_outfits)} of {total_found} matching outfits")
+
+if not display_outfits:
+    empty_state(
+        "🔍",
+        "No outfits match your filters. Try changing Occasion.",
+        "You can also set Gender or Style back to 'Any' in the sidebar."
+    )
 
 for row_start in range(0, len(display_outfits), 3):
     row_outfits = display_outfits[row_start:row_start + 3]
@@ -218,3 +227,5 @@ if display_outfits:
     )
 
     st.caption("Downloads as an HTML file — open it in any browser, or use your browser's Print → Save as PDF to convert it.")
+else:
+    st.caption("Your style report will be available once some outfits match your filters.")

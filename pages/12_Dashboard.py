@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from src.analytics import load_analytics, get_top_colors, get_occasion_breakdown
 from src.theme import apply_theme, PALETTE
+from src.ui_states import empty_state
 
 st.set_page_config(page_title="Your Dashboard", page_icon="📊", layout="wide")
 apply_theme()
@@ -31,6 +32,16 @@ if result["error"]:
     st.warning(result["error"])
 stats = result["data"]
 
+# --- Brand-new user: nothing recorded yet ---
+total_activity = stats["photos_analyzed"] + stats["outfits_viewed"] + stats["chat_messages_sent"]
+if total_activity == 0:
+    empty_state(
+        "📊",
+        "Your dashboard is empty for now",
+        "Analyze a photo, browse outfits, or chat with your stylist, and your stats will appear here."
+    )
+    st.page_link("pages/8_Analyze_My_Look.py", label="Start with Analyze My Look", icon="✨")
+
 # --- Row 1: three big numbers ---
 col1, col2, col3 = st.columns(3)
 col1.metric("📸 Photos analyzed", stats["photos_analyzed"])
@@ -39,18 +50,22 @@ col3.metric("💬 Chatbot messages sent", stats["chat_messages_sent"])
 
 st.divider()
 
-# --- Row 2: two charts side by side ---
-left, right = st.columns(2)
+# --- Row 2: the two charts as tabs that fade in smoothly ---
+tab_colors, tab_occasions = st.tabs(["🎨 Most Recommended Colors", "🎉 Occasions Styled"])
 
-with left:
+with tab_colors:
     st.subheader("Your Most Recommended Colors")
     top = get_top_colors(5)
     if not top["colors"]:
-        st.info("No color history yet. Run 'Analyze My Look' to get started!")
+        empty_state(
+            "🎨",
+            "No color history yet",
+            "Run 'Analyze My Look' and your most recommended colors will show up here."
+        )
     else:
         names = [c[0] for c in top["colors"]]
         counts = [c[1] for c in top["colors"]]
-        fig, ax = plt.subplots(figsize=(6, 4))
+        fig, ax = plt.subplots(figsize=(8, 4))
         style_axes(fig, ax)
         ax.barh(names, counts, color=PINK)
         ax.invert_yaxis()  # biggest bar on top
@@ -58,11 +73,15 @@ with left:
         st.pyplot(fig)
         plt.close(fig)
 
-with right:
+with tab_occasions:
     st.subheader("Occasions You've Styled For")
     occ = get_occasion_breakdown()
     if not occ["occasions"]:
-        st.info("No occasion history yet. Pick an occasion to see this chart!")
+        empty_state(
+            "🎉",
+            "No occasion history yet",
+            "Pick an occasion on Analyze My Look or Recommendations to fill this chart."
+        )
     else:
         labels = [o[0] for o in occ["occasions"]]
         sizes = [o[1] for o in occ["occasions"]]
