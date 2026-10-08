@@ -3,6 +3,14 @@
 An AI-powered Streamlit app that detects your skin tone from a photo,
 recommends clothing colors, suggests full outfits, and lets you preview
 outfit colors on yourself with a virtual try-on overlay.
+## UI Highlights (Week 11)
+
+- Consistent theme: 2 fonts and a 5-color palette from one central file
+- Mirror Mode: a full-screen "smart mirror" with live outfit cards and a built-in stylist chat
+- Smooth animations that respect reduced-motion settings
+- Mobile-responsive layout, tested on phone-sized screens (see docs/mobile_test.md)
+- Friendly loading and empty states on every page
+- UI audit and fixes documented in docs/ui_audit.md
 
 ## Features
 
