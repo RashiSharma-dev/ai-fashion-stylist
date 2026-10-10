@@ -49,6 +49,7 @@ with st.sidebar:
 
 
 def get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style):
+    """Return outfits that match the sidebar filters, scored and sorted from best to worst match."""
     recommended_names = [c["name"] for c in recommender.color_rules[skin_tone]["best_colors"]]
     df = recommender.df
 

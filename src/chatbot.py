@@ -10,6 +10,13 @@ MODEL_NAME = "openai/gpt-oss-20b"
 
 
 def build_system_prompt(skin_tone, occasion=None, body_shape=None, style_personality=None):
+    """
+    Build the instructions that tell the AI how to behave as a fashion stylist.
+
+    Includes whatever we know about the user (skin tone, occasion, body shape,
+    style personality) plus the scope rules (fashion topics only).
+    Returns the prompt as a single string.
+    """
     if skin_tone:
         context_line = f"The user has a {skin_tone} skin tone."
     else:
@@ -53,6 +60,13 @@ def build_system_prompt(skin_tone, occasion=None, body_shape=None, style_persona
 
 
 def get_chatbot_reply(conversation_history, skin_tone, occasion=None, body_shape=None, style_personality=None):
+    """
+    Send the conversation to the Groq AI and return the stylist's reply.
+
+    conversation_history: list of {"role": ..., "content": ...} messages so far.
+    Returns {"error": None, "reply": text} on success,
+    or {"error": message, "reply": None} if anything goes wrong.
+    """
     try:
         system_message = {
             "role": "system",
@@ -72,6 +86,13 @@ def get_chatbot_reply(conversation_history, skin_tone, occasion=None, body_shape
 
 
 def get_greeting_reply(skin_tone, occasion=None, body_shape=None, style_personality=None):
+    """
+    Ask the AI to open the chat with a short, personalized greeting.
+
+    The greeting summarizes the skin tone result and gives a few quick color tips,
+    adding occasion, body shape, and style personality tips when we have them.
+    Returns the same {"error": ..., "reply": ...} dict as get_chatbot_reply.
+    """
     occasion_note = ""
     if occasion:
         occasion_note = (
@@ -107,6 +128,13 @@ def get_greeting_reply(skin_tone, occasion=None, body_shape=None, style_personal
 
 
 def set_analysis_context(skin_tone, occasion=None, image_path=None, body_shape=None, style_personality=None):
+    """
+    Save the latest analysis results where the chat pages can find them.
+
+    Stores everything in st.session_state["stylist_context"], then resets the
+    chat (clears old messages and marks the greeting as not yet shown) so the
+    next chat starts fresh for this new analysis.
+    """
     st.session_state["stylist_context"] = {
         "skin_tone": skin_tone,
         "occasion": occasion,

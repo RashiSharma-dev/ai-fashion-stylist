@@ -84,12 +84,12 @@ def log_event(event_type, value=None):
 def get_top_colors(n=5):
     """Most recommended colors, highest first."""
     data = load_analytics()
-    ranked = sorted(data["data"]["color_counts"].items(), key=lambda x: x[1], reverse=True)
+    ranked = sorted(data["data"]["color_counts"].items(), key=lambda item: item[1], reverse=True)
     return {"error": data["error"], "colors": ranked[:n]}
 
 
 def get_occasion_breakdown():
     """All occasions and how often each was used."""
     data = load_analytics()
-    ranked = sorted(data["data"]["occasion_counts"].items(), key=lambda x: x[1], reverse=True)
+    ranked = sorted(data["data"]["occasion_counts"].items(), key=lambda item: item[1], reverse=True)
     return {"error": data["error"], "occasions": ranked}
