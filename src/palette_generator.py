@@ -1,10 +1,18 @@
+# src/palette_generator.py
 from PIL import Image, ImageDraw
 
+
 def rgb_to_hex(rgb):
+    """Convert an (r, g, b) tuple into a hex color string like "#ff8800"."""
     return "#{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2])
 
 
 def create_palette_image(colors, square_size=50):
+    """
+    Draw a row of color squares, one per (r, g, b) color in the list.
+
+    Each square is square_size pixels wide and tall. Returns a PIL image.
+    """
     width = square_size * len(colors)
     height = square_size
 
@@ -19,6 +27,8 @@ def create_palette_image(colors, square_size=50):
         draw.rectangle([x0, y0, x1, y1], fill=color)
 
     return palette
+
+
 if __name__ == "__main__":
     from dominant_color_extractor import extract_dominant_colors
 

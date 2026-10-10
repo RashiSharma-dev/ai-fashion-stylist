@@ -1,9 +1,16 @@
+# src/dominant_color_extractor.py
 import cv2
 import numpy as np
 from sklearn.cluster import KMeans
 
 
 def resize_for_speed(image, max_dimension=300):
+    """
+    Shrink an image so its longest side is at most max_dimension pixels.
+
+    Smaller images make K-Means much faster. Images that are already small
+    enough are returned unchanged.
+    """
     height, width = image.shape[:2]
     scale = max_dimension / max(height, width)
 
@@ -16,6 +23,11 @@ def resize_for_speed(image, max_dimension=300):
 
 
 def extract_dominant_colors(image_path, k=5):
+    """
+    Find the k main colors in an image using K-Means clustering.
+
+    Returns a list of k (r, g, b) tuples.
+    """
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = resize_for_speed(image)
@@ -31,6 +43,11 @@ def extract_dominant_colors(image_path, k=5):
 
 
 def get_most_dominant_color(image_path, k=5):
+    """
+    Return the single most common color in an image as an (r, g, b) tuple.
+
+    Groups the pixels into k color clusters, then picks the biggest cluster.
+    """
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = resize_for_speed(image)

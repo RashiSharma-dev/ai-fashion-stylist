@@ -1,3 +1,4 @@
+# src/outfit_compatibility.py
 from color_recommender import analyze_and_recommend, load_color_rules
 from dominant_color_extractor import get_most_dominant_color
 from palette_generator import rgb_to_hex
@@ -5,6 +6,7 @@ from color_harmony import hex_to_rgb, color_distance
 
 
 def get_all_known_colors():
+    """Return a dict of every color name in the color rules, mapped to its hex code."""
     rules = load_color_rules()
     all_colors = {}
     for skin_tone, data in rules.items():
@@ -14,6 +16,13 @@ def get_all_known_colors():
 
 
 def identify_color_name(hex_code, known_colors, threshold=80):
+    """
+    Find which known color is closest to a hex code.
+
+    known_colors: a dict of color name to hex code.
+    Returns a (name, distance) pair. The threshold is accepted but not used
+    yet, so the closest color is always returned, however far away it is.
+    """
     rgb = hex_to_rgb(hex_code)
     best_name = None
     best_distance = float("inf")
@@ -28,9 +37,16 @@ def identify_color_name(hex_code, known_colors, threshold=80):
 
 
 def check_outfit_compatibility(selfie_path, outfit_path):
+    """
+    Check whether an outfit's main color suits the skin tone in a selfie.
+
+    Returns a dict with skin_tone, outfit_color_name, outfit_hex,
+    is_recommended, and a friendly message. If the selfie can't be analyzed
+    (for example, no face found), returns the {"error": "message"} dict instead.
+    """
     skin_result = analyze_and_recommend(selfie_path)
-    if skin_result is None:
-        return None
+    if skin_result.get("error"):
+        return skin_result
 
     skin_tone = skin_result["skin_tone"]
     recommended_colors = skin_result["recommended_colors"]
@@ -60,5 +76,7 @@ def check_outfit_compatibility(selfie_path, outfit_path):
 
 if __name__ == "__main__":
     result = check_outfit_compatibility("data/photo.jpg", "data/shirt.jpeg")
-    if result:
+    if result.get("error"):
+        print(f"Error: {result['error']}")
+    else:
         print(result["message"])
