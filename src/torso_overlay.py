@@ -1,3 +1,4 @@
+# src/torso_overlay.py
 import cv2
 from color_overlay import apply_color_overlay
 
@@ -7,6 +8,11 @@ face_cascade = cv2.CascadeClassifier(
 
 
 def detect_face(image):
+    """
+    Find the first face in a BGR image.
+
+    Returns the face box as (x, y, width, height), or None if no face is found.
+    """
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=8, minSize=(80, 80))
 
@@ -17,15 +23,22 @@ def detect_face(image):
 
 
 def estimate_torso_region(face_box, image_shape):
-    x, y, w, h = face_box
+    """
+    Guess where the torso is, based on the face position.
+
+    The torso starts just below the face, extends down about two more face
+    heights, and is wider than the face. The box is kept inside the image.
+    Returns (left, top, right, bottom) in pixels.
+    """
+    face_x, face_y, face_width, face_height = face_box
     img_height, img_width = image_shape[:2]
 
-    torso_top = y + h
-    torso_bottom = y + (h * 3)
+    torso_top = face_y + face_height
+    torso_bottom = face_y + (face_height * 3)
 
-    width_expansion = int(w * 0.6)
-    torso_left = x - width_expansion
-    torso_right = x + w + width_expansion
+    width_expansion = int(face_width * 0.6)
+    torso_left = face_x - width_expansion
+    torso_right = face_x + face_width + width_expansion
 
     torso_top = max(0, torso_top)
     torso_bottom = min(img_height, torso_bottom)
@@ -36,6 +49,13 @@ def estimate_torso_region(face_box, image_shape):
 
 
 def apply_torso_overlay(image, color_bgr, strength):
+    """
+    Tint only the torso area of a photo, to preview how a clothing color looks.
+
+    strength is a percentage from 0 to 100.
+    Returns (new_image, None) on success, or (None, "No face detected") if no
+    face is found, so the caller can show a friendly message.
+    """
     face_box = detect_face(image)
 
     if face_box is None:
