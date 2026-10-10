@@ -1,9 +1,16 @@
+# src/report_generator.py
 import base64
 from io import BytesIO
 from PIL import Image
 
 
 def image_to_base64(image_np):
+    """
+    Convert an image (a NumPy array) into a base64 text string.
+
+    This lets the picture be embedded directly inside the HTML report,
+    so the report is a single file with no separate image files.
+    """
     img = Image.fromarray(image_np)
     buffer = BytesIO()
     img.save(buffer, format="PNG")
@@ -12,6 +19,14 @@ def image_to_base64(image_np):
 
 
 def generate_style_report(name, skin_tone, top_outfits, preview_image_np=None):
+    """
+    Build a downloadable style report as an HTML string.
+
+    name: the user's name, shown in the title.
+    skin_tone: the detected skin tone.
+    top_outfits: a list of outfit dicts, each with a "scores" dict.
+    preview_image_np: optional try-on image (NumPy array) to include.
+    """
     outfit_rows = ""
     for i, outfit in enumerate(top_outfits, start=1):
         outfit_rows += f"""
