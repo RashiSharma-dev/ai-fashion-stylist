@@ -9,6 +9,11 @@ from image_validation import validate_image
 # Used to record unexpected errors in the terminal (instead of print)
 logger = logging.getLogger(__name__)
 
+# Load the face detector once when this file is first imported, not on every photo
+FACE_CASCADE = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+)
+
 
 def classify_skin_tone(h, s, v):
     """
@@ -49,13 +54,9 @@ def analyze_and_recommend(image_path):
         if not is_valid:
             return {"error": message}
 
-        face_cascade = cv2.CascadeClassifier(
-            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-        )
-
         img = cv2.imread(image_path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=8, minSize=(80, 80))
+        faces = FACE_CASCADE.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=8, minSize=(80, 80))
 
         if len(faces) == 0:
             return {"error": "No face detected. Please make sure your face is clearly visible and try again."}

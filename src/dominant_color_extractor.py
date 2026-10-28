@@ -34,7 +34,7 @@ def extract_dominant_colors(image_path, k=5):
 
     pixels = image.reshape(-1, 3)
 
-    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=3)
     kmeans.fit(pixels)
 
     dominant_colors = kmeans.cluster_centers_.astype(int)
@@ -54,7 +54,7 @@ def get_most_dominant_color(image_path, k=5):
 
     pixels = image.reshape(-1, 3)
 
-    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=3)
     kmeans.fit(pixels)
 
     counts = np.bincount(kmeans.labels_)

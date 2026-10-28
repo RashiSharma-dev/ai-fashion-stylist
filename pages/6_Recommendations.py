@@ -8,7 +8,7 @@ from PIL import Image
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from recommender import OutfitRecommender
+from recommender import get_recommender
 from user_profile import save_profile, load_profile
 from torso_overlay import apply_torso_overlay
 from report_generator import generate_style_report
@@ -99,7 +99,7 @@ if "preview_outfit_id" not in st.session_state:
     st.session_state.preview_outfit_id = None
 
 with st.spinner("Finding outfits that match your filters..."):
-    recommender = OutfitRecommender()
+    recommender = get_recommender()
     all_outfits = get_filtered_outfits(recommender, skin_tone, occasion, season, gender, style)
 
 total_found = len(all_outfits)

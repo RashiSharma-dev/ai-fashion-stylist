@@ -7,7 +7,7 @@ import time
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from color_recommender import analyze_and_recommend
-from recommender import OutfitRecommender
+from recommender import get_recommender
 from chatbot import set_analysis_context
 from occasion_advisor import get_occasion_guidance, map_to_recommender_occasion
 from style_advisor import get_combined_style_advice
@@ -104,7 +104,7 @@ if analyze_clicked:
         style_personality = st.session_state.get("style_personality")
 
         with st.spinner("Finding outfits that match your style..."):
-            recommender = OutfitRecommender()
+            recommender = get_recommender()
             outfits = recommender.recommend(skin_tone, recommender_occasion, season, top_n=5)
             for outfit in outfits:
                 outfit["scores"] = recommender.calculate_match_score(outfit)

@@ -7,7 +7,7 @@ import hashlib
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from color_recommender import analyze_and_recommend
-from recommender import OutfitRecommender
+from recommender import get_recommender
 from chatbot import get_chatbot_reply
 from analytics import log_event
 from theme import apply_theme
@@ -192,7 +192,7 @@ with right:
         with pick_col2:
             season = st.radio("Season", ["Summer", "Winter"], horizontal=True, key="mirror_season")
 
-        recommender = OutfitRecommender()
+        recommender = get_recommender()
         outfits = recommender.recommend(skin_tone, occasion, season, top_n=3)
 
         if not outfits:

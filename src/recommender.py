@@ -1,6 +1,7 @@
 # src/recommender.py
 import pandas as pd
 import json
+import streamlit as st
 from color_recommender import load_color_rules
 from color_harmony import hex_to_rgb, color_distance
 
@@ -169,6 +170,12 @@ class OutfitRecommender:
             reason += " This outfit was selected primarily for its color compatibility with your skin tone, as occasion/season matches were limited in the dataset."
 
         return reason
+
+
+@st.cache_resource
+def get_recommender():
+    """Return one shared OutfitRecommender, built on the first call and reused after that."""
+    return OutfitRecommender()
 
 
 if __name__ == "__main__":
