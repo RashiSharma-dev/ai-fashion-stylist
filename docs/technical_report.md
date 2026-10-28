@@ -1,6 +1,6 @@
 # AI Fashion Color Fit Matcher & Virtual Stylist: Technical Report
 
-**Author:** Rashi Sharma, B.Tech Computer Science & Engineering (AI/ML), JIS University
+**Author:** Rashi Sharma, Sabila Nigar, Preeti Kumari of B.Tech Computer Science & Engineering (core), JIS University
 **Repository:** https://github.com/RashiSharma-dev/ai-fashion-stylist
 **Live app:** _(add the link after deployment)_
 
