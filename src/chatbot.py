@@ -1,12 +1,36 @@
 # src/chatbot.py
+import logging
 import os
 from dotenv import load_dotenv
 from groq import Groq
 import streamlit as st
 
 load_dotenv()
-_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+# Used to record unexpected errors in the terminal (instead of print)
+logger = logging.getLogger(__name__)
+
 MODEL_NAME = "openai/gpt-oss-20b"
+FRIENDLY_ERROR = "The AI stylist can't be reached right now. Please check your internet connection and try again."
+
+# The Groq connection is created the first time it is needed, not when this file is imported
+_client = None
+
+
+def _get_client():
+    """
+    Return the shared Groq connection, creating it on first use.
+
+    Raises ValueError if GROQ_API_KEY is missing. The timeout stops the chat
+    from waiting too long when the internet is slow or down.
+    """
+    global _client
+    if _client is None:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY is missing")
+        _client = Groq(api_key=api_key, timeout=15.0, max_retries=1)
+    return _client
 
 
 def build_system_prompt(skin_tone, occasion=None, body_shape=None, style_personality=None):
@@ -65,7 +89,8 @@ def get_chatbot_reply(conversation_history, skin_tone, occasion=None, body_shape
 
     conversation_history: list of {"role": ..., "content": ...} messages so far.
     Returns {"error": None, "reply": text} on success,
-    or {"error": message, "reply": None} if anything goes wrong.
+    or {"error": friendly message, "reply": None} if anything goes wrong.
+    The technical details of a failure are written to the terminal log.
     """
     try:
         system_message = {
@@ -74,15 +99,17 @@ def get_chatbot_reply(conversation_history, skin_tone, occasion=None, body_shape
         }
         full_messages = [system_message] + conversation_history
 
-        response = _client.chat.completions.create(
+        response = _get_client().chat.completions.create(
             model=MODEL_NAME,
             messages=full_messages
         )
         reply_text = response.choices[0].message.content
         return {"error": None, "reply": reply_text}
 
-    except Exception as e:
-        return {"error": str(e), "reply": None}
+    except Exception:
+        # Record the full technical details in the terminal, but show the user a friendly message
+        logger.exception("Groq chat request failed")
+        return {"error": FRIENDLY_ERROR, "reply": None}
 
 
 def get_greeting_reply(skin_tone, occasion=None, body_shape=None, style_personality=None):

@@ -1,3 +1,5 @@
+#Analyze_My_Look.py
+import logging
 import streamlit as st
 from PIL import Image
 import sys
@@ -17,6 +19,26 @@ from theme import apply_theme, show_loading
 from ui_states import empty_state
 
 apply_theme()
+
+# Used to record unexpected errors in the terminal (instead of print)
+logger = logging.getLogger(__name__)
+
+
+def analyze_photo_file(photo_file, save_path):
+    """
+    Save a camera or uploaded photo to disk and analyze it.
+
+    Returns the same dict as analyze_and_recommend: skin_tone and recommended_colors
+    on success, or {"error": "friendly message"} if the photo can't be read.
+    """
+    try:
+        image = Image.open(photo_file).convert("RGB")
+        image.save(save_path)
+    except Exception:
+        logger.exception("Could not read the photo")
+        return {"error": "We couldn't read that photo. Please try another one."}
+    return analyze_and_recommend(save_path)
+
 
 st.title("✨ Analyze My Look")
 st.write("Take a photo, pick your occasion, season, and body shape, then click one button to get your full personalized style analysis.")
@@ -79,18 +101,26 @@ if shape_guidance_result["error"] is None:
 
 camera_photo = st.camera_input("Take a photo")
 
-analyze_clicked = st.button("✨ Analyze My Look", disabled=(camera_photo is None))
+# Backup plan: if the camera is blocked or missing, the user can upload a photo instead
+uploaded_photo = st.file_uploader(
+    "Camera not working? Upload a photo instead",
+    type=["jpg", "jpeg", "png"],
+)
 
-if camera_photo is None:
-    st.info("Take a photo above to enable the Analyze button.")
+if camera_photo is not None:
+    photo_source = camera_photo
+else:
+    photo_source = uploaded_photo
+
+analyze_clicked = st.button("✨ Analyze My Look", disabled=(photo_source is None))
+
+if photo_source is None:
+    st.info("Take a photo above, or upload one, to enable the Analyze button.")
 
 if analyze_clicked:
     with st.spinner("Analyzing your skin tone..."):
-        image = Image.open(camera_photo).convert("RGB")
         save_path = "data/temp_analyze_capture.jpg"
-        image.save(save_path)
-
-        result = analyze_and_recommend(save_path)
+        result = analyze_photo_file(photo_source, save_path)
         time.sleep(0.5)
 
     if result.get("error"):

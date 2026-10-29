@@ -1,3 +1,5 @@
+#Mirror_Mode.py
+import logging
 import streamlit as st
 from PIL import Image
 import sys
@@ -12,6 +14,7 @@ from chatbot import get_chatbot_reply
 from analytics import log_event
 from theme import apply_theme
 from ui_states import empty_state
+from fallback_replies import build_offline_reply
 
 # Must be the FIRST Streamlit command. Sidebar starts collapsed for the mirror feel.
 st.set_page_config(
@@ -22,6 +25,26 @@ st.set_page_config(
 )
 
 apply_theme()
+
+# Used to record unexpected errors in the terminal (instead of print)
+logger = logging.getLogger(__name__)
+
+
+def analyze_mirror_photo(photo_file, save_path):
+    """
+    Save a camera or uploaded photo to disk and analyze it.
+
+    Returns the same dict as analyze_and_recommend: skin_tone and recommended_colors
+    on success, or {"error": "friendly message"} if the photo can't be read.
+    """
+    try:
+        image = Image.open(photo_file).convert("RGB")
+        image.save(save_path)
+    except Exception:
+        logger.exception("Could not read the mirror photo")
+        return {"error": "We couldn't read that photo. Please try another one."}
+    return analyze_and_recommend(save_path)
+
 
 # ------------------------------------------------------------------
 # Mirror aesthetic: full-screen dark layout, glow, hidden chrome
@@ -148,16 +171,24 @@ with left:
     st.caption("Step in front of the mirror and take a photo. Your colors appear instantly.")
     camera_photo = st.camera_input("Mirror camera", label_visibility="collapsed")
 
+    # Backup plan: if the camera is blocked or missing, the user can upload a photo instead
+    uploaded_photo = st.file_uploader(
+        "Camera not working? Upload a photo instead",
+        type=["jpg", "jpeg", "png"],
+    )
+
     if camera_photo is not None:
+        photo_source = camera_photo
+    else:
+        photo_source = uploaded_photo
+
+    if photo_source is not None:
         # Only re-analyze when the photo actually changes (every chat message reruns this page)
-        photo_hash = hashlib.md5(camera_photo.getvalue()).hexdigest()
+        photo_hash = hashlib.md5(photo_source.getvalue()).hexdigest()
 
         if photo_hash != st.session_state.mirror_photo_hash:
             with st.spinner("Reading your colors..."):
-                image = Image.open(camera_photo).convert("RGB")
-                save_path = "data/temp_mirror_capture.jpg"
-                image.save(save_path)
-                result = analyze_and_recommend(save_path)
+                result = analyze_mirror_photo(photo_source, "data/temp_mirror_capture.jpg")
 
             st.session_state.mirror_photo_hash = photo_hash
 
@@ -257,9 +288,15 @@ if typed_message:
             )
 
         if chat_result["error"]:
+            # The AI service is unavailable: answer from the built-in style rules instead
+            offline_result = build_offline_reply(detected_tone, context.get("occasion"))
+            if offline_result["error"] is None:
+                reply_text = offline_result["reply"]
+            else:
+                reply_text = chat_result["error"]
             st.session_state.mirror_messages.append({
                 "role": "assistant",
-                "content": f"Sorry, something went wrong: {chat_result['error']}",
+                "content": reply_text,
             })
         else:
             st.session_state.mirror_messages.append({

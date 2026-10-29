@@ -4,9 +4,11 @@ import sys
 import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from src.chatbot import get_chatbot_reply, get_greeting_reply
 from src.analytics import log_event
 from src.theme import apply_theme
+from fallback_replies import build_offline_reply
 
 apply_theme()
 
@@ -55,6 +57,19 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"
 """, unsafe_allow_html=True)
 
 TYPING_DOTS_HTML = '<div class="typing-dots"><span></span><span></span><span></span></div>'
+
+
+def offline_fallback_text(skin_tone, occasion):
+    """
+    Return a built-in stylist reply for when the AI service is unavailable.
+
+    Returns the reply text, or None if even the offline reply could not be built.
+    """
+    fallback = build_offline_reply(skin_tone, occasion)
+    if fallback["error"] is None:
+        return fallback["reply"]
+    return None
+
 
 context = st.session_state.get("stylist_context", {})
 detected_skin_tone = context.get("skin_tone")
@@ -105,7 +120,11 @@ if not st.session_state.chat_greeted and detected_skin_tone and len(st.session_s
     if greeting["error"] is None:
         st.session_state.chat_messages.append({"role": "assistant", "content": greeting["reply"]})
     else:
-        st.error(f"Something went wrong: {greeting['error']}")
+        offline_text = offline_fallback_text(detected_skin_tone, detected_occasion)
+        if offline_text:
+            st.session_state.chat_messages.append({"role": "assistant", "content": offline_text})
+        else:
+            st.error(greeting["error"])
 
 incoming_message = None
 
@@ -151,7 +170,12 @@ if incoming_message:
 
         typing_placeholder.empty()
         if result["error"]:
-            st.error(f"Something went wrong: {result['error']}")
+            offline_text = offline_fallback_text(detected_skin_tone, detected_occasion)
+            if offline_text:
+                st.markdown(offline_text)
+                st.session_state.chat_messages.append({"role": "assistant", "content": offline_text})
+            else:
+                st.error(result["error"])
         else:
             st.markdown(result["reply"])
             st.session_state.chat_messages.append({"role": "assistant", "content": result["reply"]})
