@@ -58,4 +58,39 @@ dimension of 300px before clustering. Since dominant colors don't
 meaningfully change at lower resolution, this cut processing time
 from minutes down to seconds with no visible quality loss.
 
+(Day 82): Reduced n_init from 10 to 3 in both K-Means
+calls. In a speed test, the K-Means step dropped from about 3,100 ms
+to about 230 ms.
+
+=====================================
+
+LIVE APP TEST LOG — Day 85 (Streamlit Cloud)
+=====================================
+
+TEST SUMMARY
+-------------------------------------------------------
+Result: All tests passed. No new bugs were found.
+Tested on: Chrome (laptop), brave, [Realme 11x and brave browser]
+
+What was tested:
+- All 13 pages on the live HTTPS link
+- Failure cases: photo with no face, non-image file, fast page
+  switching with the Back button, refresh during a chat, and an
+  off-topic chatbot question
+- Camera pages on a phone over HTTPS (camera access now works
+  because the deployed link uses HTTPS)
+
+NEW BUGS FOUND: None
+-------------------------------------------------------
+No crashes, red error boxes, or wrong results were seen during
+live testing.
+
+KNOWN LIMITATIONS (expected, not bugs)
+-------------------------------------------------------
+- On the hosted server, analytics and saved profiles are shared
+  between visitors and may reset when the app restarts, because
+  they are stored in local JSON files with no user accounts.
+- Free hosted apps can go to sleep when unused, so the first
+  load after a long break takes longer.
+
 =====================================
