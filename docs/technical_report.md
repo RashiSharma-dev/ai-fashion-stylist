@@ -2,7 +2,7 @@
 
 **Author:** Rashi Sharma, Sabila Nigar, Preeti Kumari of B.Tech Computer Science & Engineering (core), JIS University
 **Repository:** https://github.com/RashiSharma-dev/ai-fashion-stylist
-**Live app:** _(add the link after deployment)_
+**Live app:** https://ai-fashion-stylist.streamlit.app/
 
 ---
 
@@ -185,7 +185,7 @@ _Viva question answered: "Why did you choose these technologies?"_
 
 ## 6. Testing
 
-The project is tested at three levels. First, **10 automated unit tests** written with `pytest` check the core logic. They cover the three skin tone classes, the error dictionary returned for a missing photo, the recommender's output and its 40/30/30 scoring formula, color conversion and distance, and the harmony labels "Great Contrast" and "Too Matchy". Second, a **manual full-flow test** walks through one complete user journey: the style quiz, the skin tone analysis, the chatbot greeting, recommendations with a report download, the virtual try-on, Mirror Mode, and the dashboard. Third, there are **quality checks**: a UI audit of all 13 screens, a mobile-responsiveness check on phone-sized screens, and a custom code audit tool that confirms every function has a docstring and that no debug print statements remain. Error handling is tested by design, because every AI function returns an error dictionary instead of raising an exception to the user. During testing, one real bug was found and fixed: the outfit compatibility check crashed when a selfie had no detectable face, because it tested for `None` while the function actually returned an error dictionary. A formal accuracy benchmark for skin tone detection against expert-labeled photos has not been run yet, and is listed under future scope.
+The project is tested at three levels. First, **12 automated unit tests** written with `pytest` check the core logic. They cover the three skin tone classes, the error dictionary returned for a missing photo, the recommender's output and its 40/30/30 scoring formula, color conversion and distance, and the harmony labels "Great Contrast" and "Too Matchy", and the offline fallback replies used when the AI service is unavailable. Second, a **manual full-flow test** walks through one complete user journey: the style quiz, the skin tone analysis, the chatbot greeting, recommendations with a report download, the virtual try-on, Mirror Mode, and the dashboard. Third, there are **quality checks**: a UI audit of all 13 screens, a mobile-responsiveness check on phone-sized screens, and a custom code audit tool that confirms every function has a docstring and that no debug print statements remain. Error handling is tested by design, because every AI function returns an error dictionary instead of raising an exception to the user. During testing, one real bug was found and fixed: the outfit compatibility check crashed when a selfie had no detectable face, because it tested for `None` while the function actually returned an error dictionary. A formal accuracy benchmark for skin tone detection against expert-labeled photos has not been run yet, and is listed under future scope.
 
 _Viva question answered: "How did you test your project?"_
 
