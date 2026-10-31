@@ -41,7 +41,7 @@ Use a name nobody else would use, because profiles are shared between visitors o
 
 ## Closing line (15 seconds)
 
-"To summarize: it is live, tested with 12 automated tests, and it still works if the AI service or the internet fails. Thank you. We are happy to take questions."
+"To summarize: it is live, tested with 14 automated tests, and it still works if the AI service or the internet fails. Thank you. We are happy to take questions."
 
 ## If something goes wrong (the 4 rules)
 

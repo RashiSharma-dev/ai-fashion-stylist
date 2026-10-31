@@ -40,6 +40,18 @@ def get_recommended_colors(skin_tone):
     rules = load_color_rules()
     return rules[skin_tone]["best_colors"]
 
+def wrap_aware_mean_hue(hue_values):
+    """
+    Average OpenCV hue values (0-179) without the red wrap-around error.
+
+    Red sits at both ends of the hue scale, so reds near 175 are treated as
+    slightly below zero before averaging. A plain average of reds at 5 and 175
+    would wrongly give 90 (green). The result can be negative, which is fine
+    for the skin tone rules because they only check "hue <= 20".
+    """
+    hues = hue_values.astype(float)
+    shifted_hues = np.where(hues > 90, hues - 180, hues)
+    return float(np.mean(shifted_hues))
 
 def analyze_and_recommend(image_path):
     """
@@ -65,7 +77,7 @@ def analyze_and_recommend(image_path):
         face_region = img[face_y:face_y + face_height, face_x:face_x + face_width]
         face_hsv = cv2.cvtColor(face_region, cv2.COLOR_BGR2HSV)
 
-        avg_hue = np.mean(face_hsv[:, :, 0])
+        avg_hue = wrap_aware_mean_hue(face_hsv[:, :, 0])
         avg_saturation = np.mean(face_hsv[:, :, 1])
         avg_value = np.mean(face_hsv[:, :, 2])
 

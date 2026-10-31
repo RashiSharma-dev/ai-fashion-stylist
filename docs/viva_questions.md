@@ -5,7 +5,7 @@ Rule for every answer: problem, what I did, result with a number. Say it in your
 ## Part 1: Questions about YOU
 
 **Q1. Tell me about your project (30 seconds).**
-We built a web app that finds your face in a photo, classifies your skin tone as warm, neutral or cool, and recommends colors and ranked outfits that suit you. It also has a color try-on preview, a style quiz, and an AI stylist chatbot. It is deployed live on Streamlit Cloud, has 13 pages and 12 automated tests, and every recommendation can be explained by a visible rule.
+We built a web app that finds your face in a photo, classifies your skin tone as warm, neutral or cool, and recommends colors and ranked outfits that suit you. It also has a color try-on preview, a style quiz, and an AI stylist chatbot. It is deployed live on Streamlit Cloud, has 13 pages and 14 automated tests, and every recommendation can be explained by a visible rule.
 
 **Q2. What was your role?**
 I was the primary developer. I built the application end to end: the face detection and skin tone logic, the color extraction with K-Means, the outfit recommender and its scoring, the AI chatbot, the 13 Streamlit pages and the UI theme, the automated tests, the deployment, and the documentation. That is why I can open any file and explain it line by line.
@@ -61,7 +61,7 @@ It calls the Groq API (model `openai/gpt-oss-20b`) with a system prompt that hol
 Three layers: 13 Streamlit pages, small Python modules in `src/`, and JSON/CSV data files. The only outside service is Groq. Every function returns a dictionary with an `error` field, so bad input never crashes the app.
 
 **Q19. How did you test it?**
-12 pytest tests (skin tone classes, error dictionary, scoring formula, color math, harmony labels, offline replies), a manual full-flow test, a UI audit of 13 screens, a custom code audit tool, and a test of the live app in two browsers and on a phone.
+14 pytest tests (skin tone classes, error dictionary, scoring formula, color math, harmony labels, offline replies, wrap-aware hue average), a manual full-flow test, a UI audit of 13 screens, a custom code audit tool, and a test of the live app in two browsers and on a phone.
 
 **Q20. How is it deployed, and how is the API key protected?**
 On Streamlit Community Cloud from the `main` branch of our GitHub repo. The key is stored in Cloud secrets and a gitignored `.env` file, never in the repository. The server uses `opencv-python-headless`, because it has no display.
