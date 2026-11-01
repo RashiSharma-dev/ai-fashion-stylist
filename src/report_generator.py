@@ -1,7 +1,13 @@
 # src/report_generator.py
 import base64
+from html import escape
 from io import BytesIO
 from PIL import Image
+
+
+def safe_text(value):
+    """Turn any value into text that is safe to place inside HTML (characters like < and > are escaped)."""
+    return escape(str(value))
 
 
 def image_to_base64(image_np):
@@ -26,15 +32,19 @@ def generate_style_report(name, skin_tone, top_outfits, preview_image_np=None):
     skin_tone: the detected skin tone.
     top_outfits: a list of outfit dicts, each with a "scores" dict.
     preview_image_np: optional try-on image (NumPy array) to include.
+    Every piece of text is escaped first, so a typed name can't inject HTML.
     """
+    safe_name = safe_text(name)
+    safe_skin_tone = safe_text(str(skin_tone).upper())
+
     outfit_rows = ""
     for i, outfit in enumerate(top_outfits, start=1):
         outfit_rows += f"""
         <div class="outfit-card">
-            <h3>#{i}. Outfit {outfit['outfit_id']}</h3>
-            <p><b>Colors:</b> {outfit['top_color']} + {outfit['bottom_color']}</p>
-            <p><b>Occasion:</b> {outfit['occasion']} | <b>Style:</b> {outfit['style_type']}</p>
-            <p><b>Match Score:</b> {outfit['scores']['total']}%</p>
+            <h3>#{i}. Outfit {safe_text(outfit['outfit_id'])}</h3>
+            <p><b>Colors:</b> {safe_text(outfit['top_color'])} + {safe_text(outfit['bottom_color'])}</p>
+            <p><b>Occasion:</b> {safe_text(outfit['occasion'])} | <b>Style:</b> {safe_text(outfit['style_type'])}</p>
+            <p><b>Match Score:</b> {safe_text(outfit['scores']['total'])}%</p>
         </div>
         """
 
@@ -51,7 +61,7 @@ def generate_style_report(name, skin_tone, top_outfits, preview_image_np=None):
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>{name}'s Style Report</title>
+        <title>{safe_name}'s Style Report</title>
         <style>
             body {{
                 background-color: #0E1117;
@@ -76,8 +86,8 @@ def generate_style_report(name, skin_tone, top_outfits, preview_image_np=None):
         </style>
     </head>
     <body>
-        <h1>👗 {name}'s Style Report</h1>
-        <p><b>Detected Skin Tone:</b> {skin_tone.upper()}</p>
+        <h1>👗 {safe_name}'s Style Report</h1>
+        <p><b>Detected Skin Tone:</b> {safe_skin_tone}</p>
 
         <h2>Top {len(top_outfits)} Recommended Outfits</h2>
         {outfit_rows}
