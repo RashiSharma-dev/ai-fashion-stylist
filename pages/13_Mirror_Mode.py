@@ -4,6 +4,7 @@ import streamlit as st
 from PIL import Image
 import sys
 import os
+import uuid
 import hashlib
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -25,6 +26,10 @@ st.set_page_config(
 )
 
 apply_theme()
+
+# Each visitor gets their own temp file name, so two people can't overwrite each other's photo
+if "photo_session_id" not in st.session_state:
+    st.session_state.photo_session_id = uuid.uuid4().hex[:8]
 
 # Used to record unexpected errors in the terminal (instead of print)
 logger = logging.getLogger(__name__)
@@ -188,7 +193,7 @@ with left:
 
         if photo_hash != st.session_state.mirror_photo_hash:
             with st.spinner("Reading your colors..."):
-                result = analyze_mirror_photo(photo_source, "data/temp_mirror_capture.jpg")
+                result = analyze_mirror_photo(photo_source, f"data/temp_mirror_{st.session_state.photo_session_id}.jpg")
 
             st.session_state.mirror_photo_hash = photo_hash
 

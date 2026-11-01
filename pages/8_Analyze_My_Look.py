@@ -4,6 +4,7 @@ import streamlit as st
 from PIL import Image
 import sys
 import os
+import uuid
 import time
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -19,6 +20,10 @@ from theme import apply_theme, show_loading
 from ui_states import empty_state
 
 apply_theme()
+
+# Each visitor gets their own temp file name, so two people can't overwrite each other's photo
+if "photo_session_id" not in st.session_state:
+    st.session_state.photo_session_id = uuid.uuid4().hex[:8]
 
 # Used to record unexpected errors in the terminal (instead of print)
 logger = logging.getLogger(__name__)
@@ -119,7 +124,7 @@ if photo_source is None:
 
 if analyze_clicked:
     with st.spinner("Analyzing your skin tone..."):
-        save_path = "data/temp_analyze_capture.jpg"
+        save_path = f"data/temp_analyze_{st.session_state.photo_session_id}.jpg"
         result = analyze_photo_file(photo_source, save_path)
         time.sleep(0.5)
 
