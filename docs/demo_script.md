@@ -39,9 +39,9 @@ Add one or two if you have time. To make room, drop step 5 or 7 first.
 
 Use a name nobody else would use, because profiles are shared between visitors on the hosted app.
 
-## Closing line (15 seconds)
+## Closing line 
 
-"To summarize: it is live, tested with 14 automated tests, and it still works if the AI service or the internet fails. Thank you. We are happy to take questions."
+"To summarize: it is live, tested with 17 automated tests, and it still works if the AI service or the internet fails. Thank you. We are happy to take questions."
 
 ## If something goes wrong (the 4 rules)
 

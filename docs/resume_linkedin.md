@@ -8,13 +8,13 @@ Live app: https://ai-fashion-stylist.streamlit.app/ | Code: https://github.com/R
 - Built a 13-page web app that detects a face, classifies skin tone (warm, neutral, cool) from average HSV values, and recommends colors and outfits ranked by an explainable score (40% skin match, 30% color harmony, 30% occasion fit).
 - Extracted dominant clothing colors with K-Means clustering; cut photo processing from 2-3 minutes to seconds by resizing images, and cut K-Means time from about 3,100 ms to 230 ms in a speed test by reducing restarts.
 - Integrated a Groq-powered AI stylist chatbot with a fashion-only scope, a 15-second timeout, and an offline fallback so the app keeps working when the AI service or internet fails.
-- Wrote 14 pytest tests, found and fixed a hue wrap-around bug in the skin tone averaging, and deployed the app on Streamlit Community Cloud with the API key kept in secrets.
+- Wrote 17 pytest tests, found and fixed a hue wrap-around bug in the skin tone averaging, and deployed the app on Streamlit Community Cloud with the API key kept in secrets.
 
 ## 2. Resume: short version 
 
 **AI Fashion Color Fit Matcher & Virtual Stylist** | Python, OpenCV, scikit-learn, Streamlit
 - Built and deployed a 13-page web app that classifies skin tone from a photo using OpenCV and HSV rules, and ranks outfits with an explainable 40/30/30 score.
-- Added K-Means color extraction, a Groq AI chatbot with offline fallback, and 14 pytest tests; live on Streamlit Cloud.
+- Added K-Means color extraction, a Groq AI chatbot with offline fallback, and 17 pytest tests; live on Streamlit Cloud.
 
 ## 3. Resume: skills line
 
@@ -31,7 +31,7 @@ What's inside:
 • K-Means clustering for clothing colors
 • Outfit scoring: 40% skin match, 30% color harmony, 30% occasion fit
 • An AI stylist chatbot (Groq) with an offline fallback
-• 13 pages, 14 automated tests, live on Streamlit Cloud
+• 13 pages, 17 automated tests, live on Streamlit Cloud
 
 Three things I learned:
 1. Measure before you optimize. A 2-3 minute upload became seconds.
@@ -51,4 +51,4 @@ AI app that classifies skin tone from a photo and recommends flattering colors a
 
 ## 6. LinkedIn "Projects" description 
 
-Web app that finds your face, classifies skin tone with OpenCV and HSV rules, and ranks outfits with an explainable score. Includes K-Means color extraction, a Groq AI chatbot with offline fallback, 14 tests, and a live deployment.
+Web app that finds your face, classifies skin tone with OpenCV and HSV rules, and ranks outfits with an explainable score. Includes K-Means color extraction, a Groq AI chatbot with offline fallback, 17 tests, and a live deployment.
