@@ -71,3 +71,6 @@ We have not benchmarked it on a labeled photo set, so I can't give an accuracy p
 
 **Q22. What are the limitations, and what about privacy and bias?**
 Simple skin tone rules, Haar detection works best on front-facing faces, 150 synthetic outfits (not real products), self-selected body shape, a flat-color try-on, and shared local-file storage on the hosted server. Photos are saved to a fixed temp file, so two visitors at the same moment could overwrite each other's photo, and a fix is unique file names. The thresholds were not calibrated on a diverse dataset, so bias is possible, and we would add a fairness check.
+
+**Q23. Tell me about a bug you found while testing.**
+While measuring the face colors, I found that OpenCV hue wraps around, because red sits at both ends of the scale (0 and 179). On one photo, 28% of the face pixels were at the far end, so a plain average of hue gave 62.6, which is green, and the app labeled the skin "cool". I measured the spread of the hues to confirm it, then switched to a wrap-aware average that treats reds near 179 as slightly below zero. I added 2 tests, and the test count went from 12 to 14. I still have not measured accuracy on a labeled photo set.
